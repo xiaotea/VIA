@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Message &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Packetizer" href="packet.html" />
+    <link rel="prev" title="Client" href="client.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paramiko.message">
+<span id="message"></span><h1>Message<a class="headerlink" href="#module-paramiko.message" title="Permalink to this heading">¶</a></h1>
+<p>Implementation of an SSH2 “message”.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.message.Message">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.message.</span></span><span class="sig-name descname"><span class="pre">Message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message" title="Permalink to this definition">¶</a></dt>
+<dd><p>An SSH2 message is a stream of bytes that encodes some combination of
+strings, integers, bools, and infinite-precision integers.  This class
+builds or breaks down such a byte stream.</p>
+<p>Normally you don’t need to deal with anything this low-level, but it’s
+exposed for people implementing custom extensions, or features that
+paramiko doesn’t support yet.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new SSH2 message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – the byte stream to use as the message content (passed in only when
+decomposing a message).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string representation of this object, for debugging.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.message.Message.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.message.Message.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a sequence of items to the stream.  The values are encoded based
+on their type: bytes, str, int, bool, or list.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Longs are encoded non-deterministically.  Don’t use this method.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seq</strong> – the sequence of items</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_adaptive_int">
+<span class="sig-name descname"><span class="pre">add_adaptive_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_adaptive_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer to the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – integer to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_boolean">
+<span class="sig-name descname"><span class="pre">add_boolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a boolean value to the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – boolean value to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_byte">
+<span class="sig-name descname"><span class="pre">add_byte</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single byte to the stream, without any formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – byte to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_bytes">
+<span class="sig-name descname"><span class="pre">add_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write bytes to the stream, without any formatting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>b</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – bytes to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_int">
+<span class="sig-name descname"><span class="pre">add_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an integer to the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – integer to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_int64">
+<span class="sig-name descname"><span class="pre">add_int64</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_int64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a 64-bit int to the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – long int to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_list">
+<span class="sig-name descname"><span class="pre">add_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a list of strings to the stream.  They are encoded identically to
+a single string of values separated by commas.  (Yes, really, that’s
+how SSH2 does it.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>l</strong> – list of strings to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_mpint">
+<span class="sig-name descname"><span class="pre">add_mpint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_mpint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a long int to the stream, encoded as an infinite-precision
+integer.  This method only works on positive numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – long int to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.add_string">
+<span class="sig-name descname"><span class="pre">add_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.add_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a bytestring to the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>s</strong> (<em>byte</em>) – bytestring to add</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.asbytes">
+<span class="sig-name descname"><span class="pre">asbytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.asbytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the byte stream content of this Message, as a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_adaptive_int">
+<span class="sig-name descname"><span class="pre">get_adaptive_int</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_adaptive_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch an int from the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a 32-bit unsigned <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_binary">
+<span class="sig-name descname"><span class="pre">get_binary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_binary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#paramiko.message.Message.get_string" title="paramiko.message.Message.get_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_string</span></code></a> (obtains a bytestring).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_boolean">
+<span class="sig-name descname"><span class="pre">get_boolean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_boolean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a boolean from the stream.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_byte">
+<span class="sig-name descname"><span class="pre">get_byte</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_byte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next byte of the message, without decomposing it.  This
+is equivalent to <a class="reference internal" href="#paramiko.message.Message.get_bytes" title="paramiko.message.Message.get_bytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_bytes(1)</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the next (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a>) byte of the message, or <code class="docutils literal notranslate"><span class="pre">b'\'</span></code> if there
+aren’t any bytes remaining.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_bytes">
+<span class="sig-name descname"><span class="pre">get_bytes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next <code class="docutils literal notranslate"><span class="pre">n</span></code> bytes of the message, without decomposing into an
+int, decoded string, etc.  Just the raw bytes are returned. Returns a
+string of <code class="docutils literal notranslate"><span class="pre">n</span></code> zero bytes if there weren’t <code class="docutils literal notranslate"><span class="pre">n</span></code> bytes remaining in
+the message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_int">
+<span class="sig-name descname"><span class="pre">get_int</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch an int from the stream.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_int64">
+<span class="sig-name descname"><span class="pre">get_int64</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_int64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a 64-bit int from the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a 64-bit unsigned integer (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_list">
+<span class="sig-name descname"><span class="pre">get_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a list of <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strings</span></code></a> from the stream.</p>
+<p>These are trivially encoded as comma-separated values in a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_mpint">
+<span class="sig-name descname"><span class="pre">get_mpint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_mpint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a long int (mpint) from the stream.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an arbitrary-length integer (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_remainder">
+<span class="sig-name descname"><span class="pre">get_remainder</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_remainder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a> of this message that haven’t already been parsed and
+returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_so_far">
+<span class="sig-name descname"><span class="pre">get_so_far</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_so_far" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a> of this message that have been parsed and
+returned. The string passed into a message’s constructor can be
+regenerated by concatenating <code class="docutils literal notranslate"><span class="pre">get_so_far</span></code> and <a class="reference internal" href="#paramiko.message.Message.get_remainder" title="paramiko.message.Message.get_remainder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_remainder</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_string">
+<span class="sig-name descname"><span class="pre">get_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a “string” from the stream.  This will actually be a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a>
+object, and may contain unprintable characters.  (It’s not unheard of
+for a string to contain another byte-stream message.)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.get_text">
+<span class="sig-name descname"><span class="pre">get_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.get_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a Unicode string from the stream.</p>
+<p>This currently operates by attempting to encode the next “string” as
+<code class="docutils literal notranslate"><span class="pre">utf-8</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.message.Message.rewind">
+<span class="sig-name descname"><span class="pre">rewind</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.message.Message.rewind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rewind the message to the beginning as if no items had been parsed
+out of it yet.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Message</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.message.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.__init__"><code class="docutils literal notranslate"><span class="pre">Message.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.__repr__"><code class="docutils literal notranslate"><span class="pre">Message.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.__weakref__"><code class="docutils literal notranslate"><span class="pre">Message.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add"><code class="docutils literal notranslate"><span class="pre">Message.add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_adaptive_int"><code class="docutils literal notranslate"><span class="pre">Message.add_adaptive_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_boolean"><code class="docutils literal notranslate"><span class="pre">Message.add_boolean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_byte"><code class="docutils literal notranslate"><span class="pre">Message.add_byte()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_bytes"><code class="docutils literal notranslate"><span class="pre">Message.add_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_int"><code class="docutils literal notranslate"><span class="pre">Message.add_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_int64"><code class="docutils literal notranslate"><span class="pre">Message.add_int64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_list"><code class="docutils literal notranslate"><span class="pre">Message.add_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_mpint"><code class="docutils literal notranslate"><span class="pre">Message.add_mpint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.add_string"><code class="docutils literal notranslate"><span class="pre">Message.add_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.asbytes"><code class="docutils literal notranslate"><span class="pre">Message.asbytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_adaptive_int"><code class="docutils literal notranslate"><span class="pre">Message.get_adaptive_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_binary"><code class="docutils literal notranslate"><span class="pre">Message.get_binary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_boolean"><code class="docutils literal notranslate"><span class="pre">Message.get_boolean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_byte"><code class="docutils literal notranslate"><span class="pre">Message.get_byte()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_bytes"><code class="docutils literal notranslate"><span class="pre">Message.get_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_int"><code class="docutils literal notranslate"><span class="pre">Message.get_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_int64"><code class="docutils literal notranslate"><span class="pre">Message.get_int64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_list"><code class="docutils literal notranslate"><span class="pre">Message.get_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_mpint"><code class="docutils literal notranslate"><span class="pre">Message.get_mpint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_remainder"><code class="docutils literal notranslate"><span class="pre">Message.get_remainder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_so_far"><code class="docutils literal notranslate"><span class="pre">Message.get_so_far()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_string"><code class="docutils literal notranslate"><span class="pre">Message.get_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.get_text"><code class="docutils literal notranslate"><span class="pre">Message.get_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.message.Message.rewind"><code class="docutils literal notranslate"><span class="pre">Message.rewind()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/message.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

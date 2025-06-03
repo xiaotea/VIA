@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>SSH agents &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Host keys / known_hosts files" href="hostkeys.html" />
+    <link rel="prev" title="Authentication modules" href="auth.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paramiko.agent">
+<span id="ssh-agents"></span><h1>SSH agents<a class="headerlink" href="#module-paramiko.agent" title="Permalink to this heading">¶</a></h1>
+<p>SSH Agent interface</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.Agent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><a class="headerlink" href="#paramiko.agent.Agent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Client interface for using private keys from an SSH agent running on the
+local machine.  If an SSH agent is running, this class can be used to
+connect to it and retrieve <a class="reference internal" href="keys.html#paramiko.pkey.PKey" title="paramiko.pkey.PKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code></a> objects which can be used when
+attempting to authenticate to remote SSH servers.</p>
+<p>Upon initialization, a session with the local machine’s SSH agent is
+opened, if one is running. If no agent is running, initialization will
+succeed, but <a class="reference internal" href="#paramiko.agent.Agent.get_keys" title="paramiko.agent.Agent.get_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_keys</span></code></a> will return an empty tuple.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> –
+if an SSH agent is found, but speaks an incompatible protocol</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.10: </span>Added support for native openssh agent on windows (extending previous
+putty pageant support)</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.Agent.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.Agent.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the SSH agent connection.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.Agent.get_keys">
+<span class="sig-name descname"><span class="pre">get_keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.Agent.get_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of keys available through the SSH agent, if any.  If
+no SSH agent was running (or it couldn’t be contacted), an empty list
+will be returned.</p>
+<p>This method performs no IO, just returns the list of keys retrieved
+when the connection was made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of <a class="reference internal" href="#paramiko.agent.AgentKey" title="paramiko.agent.AgentKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AgentKey</span></code></a> objects representing keys available on the
+SSH agent</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentClientProxy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentClientProxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chanRemote</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentClientProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class proxying request as a client:</p>
+<ol class="arabic simple">
+<li><p>client ask for a request_forward_agent()</p></li>
+<li><p>server creates a proxy and a fake SSH Agent</p></li>
+<li><p>server ask for establishing a connection when needed,
+calling the forward_agent_handler at client side.</p></li>
+<li><p>the forward_agent_handler launch a thread for connecting
+the remote fake agent and the local agent</p></li>
+<li><p>Communication occurs …</p></li>
+</ol>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentClientProxy.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentClientProxy.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the current connection and terminate the agent
+Should be called manually</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentClientProxy.connect">
+<span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentClientProxy.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method automatically called by <code class="docutils literal notranslate"><span class="pre">AgentProxyThread.run</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentKey</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Private key held in a local SSH agent.  This type of key can be used for
+authenticating to a remote server (signing).  Most other key operations
+work as expected.</p>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.2: </span>Added the <code class="docutils literal notranslate"><span class="pre">comment</span></code> kwarg and attribute.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.2: </span>Added the <code class="docutils literal notranslate"><span class="pre">.inner_key</span></code> attribute holding a reference to the ‘real’
+key instance this key is a proxy for, if one was obtainable, else None.</p>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.algorithm_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">algorithm_name</span></span><a class="headerlink" href="#paramiko.agent.AgentKey.algorithm_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the key algorithm identifier for this key.</p>
+<p>Similar to <a class="reference internal" href="#paramiko.agent.AgentKey.get_name" title="paramiko.agent.AgentKey.get_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_name</span></code></a>, but aimed at pure algorithm name instead of SSH
+protocol field value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.asbytes">
+<span class="sig-name descname"><span class="pre">asbytes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.asbytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string of an SSH <a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Message</span></code></a> made up of the public part(s) of
+this key.  This string is suitable for passing to <code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code> to
+re-create the key object later.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.can_sign">
+<span class="sig-name descname"><span class="pre">can_sign</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.can_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">True</span></code> if this key has the private part necessary for signing
+data.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.fingerprint">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fingerprint</span></span><a class="headerlink" href="#paramiko.agent.AgentKey.fingerprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modern fingerprint property designed to be comparable to OpenSSH.</p>
+<p>Currently only does SHA256 (the OpenSSH default).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.from_path">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">passphrase</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to instantiate appropriate key subclass from given file path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>Path</em>) – The path to load (may also be a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>).</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code> subclass instance.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnknownKeyType</span></code>, if our crypto backend doesn’t know this key type.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.from_private_key">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_private_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.from_private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a key object by reading a private key from a file (or file-like)
+object.  If the private key is encrypted and <code class="docutils literal notranslate"><span class="pre">password</span></code> is not
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, the given password will be used to decrypt the key (otherwise
+<a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.PasswordRequiredException" title="paramiko.ssh_exception.PasswordRequiredException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a> is thrown).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_obj</strong> – the file-like object to read from</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an optional password to use to decrypt the key, if it’s encrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new <a class="reference internal" href="keys.html#paramiko.pkey.PKey" title="paramiko.pkey.PKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code></a> based on the given private key</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code> – if there was an error reading the key</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.PasswordRequiredException" title="paramiko.ssh_exception.PasswordRequiredException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a> –
+if the private key file is encrypted, and <code class="docutils literal notranslate"><span class="pre">password</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> – if the key file is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.from_private_key_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_private_key_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.from_private_key_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a key object by reading a private key file.  If the private
+key is encrypted and <code class="docutils literal notranslate"><span class="pre">password</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, the given password
+will be used to decrypt the key (otherwise <a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.PasswordRequiredException" title="paramiko.ssh_exception.PasswordRequiredException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a>
+is thrown).  Through the magic of Python, this factory method will
+exist in all subclasses of PKey (such as <a class="reference internal" href="keys.html#paramiko.rsakey.RSAKey" title="paramiko.rsakey.RSAKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RSAKey</span></code></a> or <a class="reference internal" href="keys.html#paramiko.dsskey.DSSKey" title="paramiko.dsskey.DSSKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DSSKey</span></code></a>), but
+is useless on the abstract PKey class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of the file to read</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an optional password to use to decrypt the key file, if it’s
+encrypted</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new <a class="reference internal" href="keys.html#paramiko.pkey.PKey" title="paramiko.pkey.PKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code></a> based on the given private key</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code> – if there was an error reading the file</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.PasswordRequiredException" title="paramiko.ssh_exception.PasswordRequiredException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a> – if the private key file is
+encrypted, and <code class="docutils literal notranslate"><span class="pre">password</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> – if the key file is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.from_type_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_type_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.from_type_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given type <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> &amp; raw <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a>, return a <code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code> subclass instance.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">PKey.from_type_string(&quot;ssh-ed25519&quot;,</span> <span class="pre">&lt;public</span> <span class="pre">bytes&gt;)</span></code>
+will (if successful) return a new <a class="reference internal" href="keys.html#paramiko.ed25519key.Ed25519Key" title="paramiko.ed25519key.Ed25519Key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Ed25519Key</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>key_type</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The key type, eg <code class="docutils literal notranslate"><span class="pre">&quot;ssh-ed25519&quot;</span></code>.</p></li>
+<li><p><strong>key_bytes</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – The raw byte data forming the key material, as expected by
+subclasses’ <code class="docutils literal notranslate"><span class="pre">data</span></code> parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="xref py py-obj docutils literal notranslate"><span class="pre">PKey</span></code> subclass instance.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnknownKeyType</span></code>, if no registered classes knew about this type.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.2.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.get_base64">
+<span class="sig-name descname"><span class="pre">get_base64</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.get_base64" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a base64 string containing the public part of this key.  Nothing
+secret is revealed.  This format is compatible with that used to store
+public key files or recognized host keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a base64 <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a> containing the public part of the key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.get_bits">
+<span class="sig-name descname"><span class="pre">get_bits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.get_bits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of significant bits in this key.  This is useful
+for judging the relative security of a key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bits in the key (as an <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a>)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.get_fingerprint">
+<span class="sig-name descname"><span class="pre">get_fingerprint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.get_fingerprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an MD5 fingerprint of the public part of this key.  Nothing
+secret is revealed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a 16-byte <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a> (binary) of the MD5 fingerprint, in SSH
+format.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the name of this private key implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>name of this private key type, in SSH terminology, as a <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a> (for
+example, <code class="docutils literal notranslate"><span class="pre">&quot;ssh-rsa&quot;</span></code>).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.identifiers">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.identifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>returns an iterable of key format/name strings this class can handle.</p>
+<p>Most classes only have a single identifier, and thus this default
+implementation suffices; see <a class="reference internal" href="keys.html#paramiko.ecdsakey.ECDSAKey" title="paramiko.ecdsakey.ECDSAKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ECDSAKey</span></code></a> for one example of an
+override.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.load_certificate">
+<span class="sig-name descname"><span class="pre">load_certificate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.load_certificate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supplement the private key contents with data loaded from an OpenSSH
+public key (<code class="docutils literal notranslate"><span class="pre">.pub</span></code>) or certificate (<code class="docutils literal notranslate"><span class="pre">-cert.pub</span></code>) file, a string
+containing such a file, or a <a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Message</span></code></a> object.</p>
+<p>The .pub contents adds no real value, since the private key
+file includes sufficient information to derive the public
+key info. For certificates, however, this can be used on
+the client side to offer authentication requests to the server
+based on certificate instead of raw public key.</p>
+<p>See:
+<a class="reference external" href="https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.certkeys">https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.certkeys</a></p>
+<p>Note: very little effort is made to validate the certificate contents,
+that is for the server to decide if it is good enough to authenticate
+successfully.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.sign_ssh_data">
+<span class="sig-name descname"><span class="pre">sign_ssh_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algorithm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.sign_ssh_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sign a blob of data with this private key, and return a <a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Message</span></code></a>
+representing an SSH signature message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – the data to sign.</p></li>
+<li><p><strong>algorithm</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the signature algorithm to use, if different from the key’s
+internal name. Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an SSH signature <a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">message</span></code></a>.</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.9: </span>Added the <code class="docutils literal notranslate"><span class="pre">algorithm</span></code> kwarg.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.verify_ssh_sig">
+<span class="sig-name descname"><span class="pre">verify_ssh_sig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.verify_ssh_sig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a blob of data, and an SSH message representing a signature of
+that data, verify that it was signed with this key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><em>bytes</em></a>) – the data that was signed.</p></li>
+<li><p><strong>msg</strong> (<em>.Message</em>) – an SSH signature message</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the signature verifies correctly; <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.write_private_key">
+<span class="sig-name descname"><span class="pre">write_private_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_obj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.write_private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write private key contents into a file (or file-like) object.  If the
+password is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, the key is encrypted before writing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_obj</strong> – the file-like object to write into</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an optional password to use to encrypt the key</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code> – if there was an error writing to the file</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> – if the key is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentKey.write_private_key_file">
+<span class="sig-name descname"><span class="pre">write_private_key_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentKey.write_private_key_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write private key contents into a file.  If the password is not
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, the key is encrypted before writing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – name of the file to write</p></li>
+<li><p><strong>password</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – an optional password to use to encrypt the key file</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code> – if there was an error writing the file</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> – if the key is invalid</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentLocalProxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to be used when wanting to ask a local SSH Agent being
+asked from a remote fake agent (so use a unix socket for ex.)</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.daemon">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">daemon</span></span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.daemon" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean value indicating whether this thread is a daemon thread.</p>
+<p>This must be set before start() is called, otherwise RuntimeError is
+raised. Its initial value is inherited from the creating thread; the
+main thread is not a daemon thread and therefore all threads created in
+the main thread default to daemon = False.</p>
+<p>The entire Python program exits when only daemon threads are left.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.get_connection">
+<span class="sig-name descname"><span class="pre">get_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.get_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pair of socket object and string address.</p>
+<p>May block!</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.ident">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ident</span></span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.ident" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thread identifier of this thread or None if it has not been started.</p>
+<p>This is a nonzero integer. See the get_ident() function. Thread
+identifiers may be recycled when a thread exits and another thread is
+created. The identifier is available even after the thread has exited.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.isAlive">
+<span class="sig-name descname"><span class="pre">isAlive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method is deprecated, use is_alive() instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method returns True just before the run() method starts until just
+after the run() method terminates. The module function enumerate()
+returns a list of all alive threads.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the thread terminates.</p>
+<p>This blocks the calling thread until the thread whose join() method is
+called terminates – either normally or through an unhandled exception
+or until the optional timeout occurs.</p>
+<p>When the timeout argument is present and not None, it should be a
+floating point number specifying a timeout for the operation in seconds
+(or fractions thereof). As join() always returns None, you must call
+is_alive() after join() to decide whether a timeout happened – if the
+thread is still alive, the join() call timed out.</p>
+<p>When the timeout argument is not present or None, the operation will
+block until the thread terminates.</p>
+<p>A thread can be join()ed many times.</p>
+<p>join() raises a RuntimeError if an attempt is made to join the current
+thread as that would cause a deadlock. It is also an error to join() a
+thread before it has been started and attempts to do so raises the same
+exception.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string used for identification purposes only.</p>
+<p>It has no semantics. Multiple threads may be given the same name. The
+initial name is set by the constructor.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.native_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_id</span></span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.native_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Native integral thread ID of this thread, or None if it has not been started.</p>
+<p>This is a non-negative integer. See the get_native_id() function.
+This represents the Thread ID as reported by the kernel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentLocalProxy.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentLocalProxy.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the thread’s activity.</p>
+<p>It must be called at most once per thread object. It arranges for the
+object’s run() method to be invoked in a separate thread of control.</p>
+<p>This method will raise a RuntimeError if called more than once on the
+same thread object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentProxyThread</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class in charge of communication between two channels.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.daemon">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">daemon</span></span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.daemon" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean value indicating whether this thread is a daemon thread.</p>
+<p>This must be set before start() is called, otherwise RuntimeError is
+raised. Its initial value is inherited from the creating thread; the
+main thread is not a daemon thread and therefore all threads created in
+the main thread default to daemon = False.</p>
+<p>The entire Python program exits when only daemon threads are left.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.ident">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ident</span></span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.ident" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thread identifier of this thread or None if it has not been started.</p>
+<p>This is a nonzero integer. See the get_ident() function. Thread
+identifiers may be recycled when a thread exits and another thread is
+created. The identifier is available even after the thread has exited.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.isAlive">
+<span class="sig-name descname"><span class="pre">isAlive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method is deprecated, use is_alive() instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method returns True just before the run() method starts until just
+after the run() method terminates. The module function enumerate()
+returns a list of all alive threads.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the thread terminates.</p>
+<p>This blocks the calling thread until the thread whose join() method is
+called terminates – either normally or through an unhandled exception
+or until the optional timeout occurs.</p>
+<p>When the timeout argument is present and not None, it should be a
+floating point number specifying a timeout for the operation in seconds
+(or fractions thereof). As join() always returns None, you must call
+is_alive() after join() to decide whether a timeout happened – if the
+thread is still alive, the join() call timed out.</p>
+<p>When the timeout argument is not present or None, the operation will
+block until the thread terminates.</p>
+<p>A thread can be join()ed many times.</p>
+<p>join() raises a RuntimeError if an attempt is made to join the current
+thread as that would cause a deadlock. It is also an error to join() a
+thread before it has been started and attempts to do so raises the same
+exception.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string used for identification purposes only.</p>
+<p>It has no semantics. Multiple threads may be given the same name. The
+initial name is set by the constructor.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.native_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_id</span></span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.native_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Native integral thread ID of this thread, or None if it has not been started.</p>
+<p>This is a non-negative integer. See the get_native_id() function.
+This represents the Thread ID as reported by the kernel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentProxyThread.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentProxyThread.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the thread’s activity.</p>
+<p>It must be called at most once per thread object. It arranges for the
+object’s run() method to be invoked in a separate thread of control.</p>
+<p>This method will raise a RuntimeError if called more than once on the
+same thread object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentRemoteProxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chan</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to be used when wanting to ask a remote SSH Agent</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.daemon">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">daemon</span></span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.daemon" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean value indicating whether this thread is a daemon thread.</p>
+<p>This must be set before start() is called, otherwise RuntimeError is
+raised. Its initial value is inherited from the creating thread; the
+main thread is not a daemon thread and therefore all threads created in
+the main thread default to daemon = False.</p>
+<p>The entire Python program exits when only daemon threads are left.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.ident">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ident</span></span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.ident" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thread identifier of this thread or None if it has not been started.</p>
+<p>This is a nonzero integer. See the get_ident() function. Thread
+identifiers may be recycled when a thread exits and another thread is
+created. The identifier is available even after the thread has exited.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.isAlive">
+<span class="sig-name descname"><span class="pre">isAlive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.isAlive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method is deprecated, use is_alive() instead.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.is_alive">
+<span class="sig-name descname"><span class="pre">is_alive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.is_alive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether the thread is alive.</p>
+<p>This method returns True just before the run() method starts until just
+after the run() method terminates. The module function enumerate()
+returns a list of all alive threads.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait until the thread terminates.</p>
+<p>This blocks the calling thread until the thread whose join() method is
+called terminates – either normally or through an unhandled exception
+or until the optional timeout occurs.</p>
+<p>When the timeout argument is present and not None, it should be a
+floating point number specifying a timeout for the operation in seconds
+(or fractions thereof). As join() always returns None, you must call
+is_alive() after join() to decide whether a timeout happened – if the
+thread is still alive, the join() call timed out.</p>
+<p>When the timeout argument is not present or None, the operation will
+block until the thread terminates.</p>
+<p>A thread can be join()ed many times.</p>
+<p>join() raises a RuntimeError if an attempt is made to join the current
+thread as that would cause a deadlock. It is also an error to join() a
+thread before it has been started and attempts to do so raises the same
+exception.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string used for identification purposes only.</p>
+<p>It has no semantics. Multiple threads may be given the same name. The
+initial name is set by the constructor.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.native_id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">native_id</span></span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.native_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Native integral thread ID of this thread, or None if it has not been started.</p>
+<p>This is a non-negative integer. See the get_native_id() function.
+This represents the Thread ID as reported by the kernel.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method representing the thread’s activity.</p>
+<p>You may override this method in a subclass. The standard run() method
+invokes the callable object passed to the object’s constructor as the
+target argument, if any, with sequential and keyword arguments taken
+from the args and kwargs arguments, respectively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRemoteProxy.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRemoteProxy.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the thread’s activity.</p>
+<p>It must be called at most once per thread object. It arranges for the
+object’s run() method to be invoked in a separate thread of control.</p>
+<p>This method will raise a RuntimeError if called more than once on the
+same thread object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentRequestHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentRequestHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chanClient</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentRequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Primary/default implementation of SSH agent forwarding functionality.</p>
+<p>Simply instantiate this class, handing it a live command-executing session
+object, and it will handle forwarding any local SSH agent processes it
+finds.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Connect</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">SSHClient</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">username</span><span class="p">)</span>
+<span class="c1"># Obtain session</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_transport</span><span class="p">()</span><span class="o">.</span><span class="n">open_session</span><span class="p">()</span>
+<span class="c1"># Forward local agent</span>
+<span class="n">AgentRequestHandler</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<span class="c1"># Commands executed after this point will see the forwarded agent on</span>
+<span class="c1"># the remote end.</span>
+<span class="n">session</span><span class="o">.</span><span class="n">exec_command</span><span class="p">(</span><span class="s2">&quot;git clone https://my.git.repository/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.agent.AgentServerProxy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">AgentServerProxy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentServerProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows an SSH server to access a forwarded agent.</p>
+<p>This also creates a unix domain socket on the system to allow external
+programs to also access the agent. For this reason, you probably only want
+to create one of these.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">connect()</span></code> must be called before it is usable. This will also load the
+list of keys the agent contains. You must also call <a class="reference internal" href="#paramiko.agent.AgentServerProxy.close" title="paramiko.agent.AgentServerProxy.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> in
+order to clean up the unix socket and the thread that maintains it.
+(<code class="xref py py-class docutils literal notranslate"><span class="pre">contextlib.closing</span></code> might be helpful to you.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> (<em>.Transport</em>) – Transport used for SSH Agent communication forwarding</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.SSHException" title="paramiko.ssh_exception.SSHException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHException</span></code></a> – mostly if we lost the agent</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentServerProxy.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentServerProxy.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the agent, clean the files, close connections
+Should be called manually</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentServerProxy.get_env">
+<span class="sig-name descname"><span class="pre">get_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentServerProxy.get_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for the environment under unix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a dict containing the <code class="docutils literal notranslate"><span class="pre">SSH_AUTH_SOCK</span></code> environment variables</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.agent.AgentServerProxy.get_keys">
+<span class="sig-name descname"><span class="pre">get_keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.AgentServerProxy.get_keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of keys available through the SSH agent, if any.  If
+no SSH agent was running (or it couldn’t be contacted), an empty list
+will be returned.</p>
+<p>This method performs no IO, just returns the list of keys retrieved
+when the connection was made.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of <a class="reference internal" href="#paramiko.agent.AgentKey" title="paramiko.agent.AgentKey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AgentKey</span></code></a> objects representing keys available on the
+SSH agent</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="paramiko.agent.get_agent_connection">
+<span class="sig-prename descclassname"><span class="pre">paramiko.agent.</span></span><span class="sig-name descname"><span class="pre">get_agent_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.agent.get_agent_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns some SSH agent object, or None if none were found/supported.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.10.</span></p>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SSH agents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.Agent.close"><code class="docutils literal notranslate"><span class="pre">Agent.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.Agent.get_keys"><code class="docutils literal notranslate"><span class="pre">Agent.get_keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentClientProxy"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentClientProxy.close"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentClientProxy.connect"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy.connect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentKey"><code class="docutils literal notranslate"><span class="pre">AgentKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.algorithm_name"><code class="docutils literal notranslate"><span class="pre">AgentKey.algorithm_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.asbytes"><code class="docutils literal notranslate"><span class="pre">AgentKey.asbytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.can_sign"><code class="docutils literal notranslate"><span class="pre">AgentKey.can_sign()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.fingerprint"><code class="docutils literal notranslate"><span class="pre">AgentKey.fingerprint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.from_path"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.from_private_key"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_private_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.from_private_key_file"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_private_key_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.from_type_string"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_type_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.get_base64"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_base64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.get_bits"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_bits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.get_fingerprint"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_fingerprint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.get_name"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.identifiers"><code class="docutils literal notranslate"><span class="pre">AgentKey.identifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.load_certificate"><code class="docutils literal notranslate"><span class="pre">AgentKey.load_certificate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">AgentKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">AgentKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">AgentKey.write_private_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">AgentKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.daemon"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.get_connection"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.get_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.ident"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.join"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.name"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.native_id"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.run"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentLocalProxy.start"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentProxyThread"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.daemon"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.ident"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.join"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.name"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.native_id"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.run"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentProxyThread.start"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.daemon"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.ident"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.join"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.name"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.native_id"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.run"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentRemoteProxy.start"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentRequestHandler"><code class="docutils literal notranslate"><span class="pre">AgentRequestHandler</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.AgentServerProxy"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentServerProxy.close"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentServerProxy.get_env"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.get_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.agent.AgentServerProxy.get_keys"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.get_keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.agent.get_agent_connection"><code class="docutils literal notranslate"><span class="pre">get_agent_connection()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/agent.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

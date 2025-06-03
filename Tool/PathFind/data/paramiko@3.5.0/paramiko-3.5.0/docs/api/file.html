@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Buffered files &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cross-platform pipe implementations" href="pipe.html" />
+    <link rel="prev" title="Buffered pipes" href="buffered_pipe.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paramiko.file">
+<span id="buffered-files"></span><h1>Buffered files<a class="headerlink" href="#module-paramiko.file" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.file.</span></span><span class="sig-name descname"><span class="pre">BufferedFile</span></span><a class="headerlink" href="#paramiko.file.BufferedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reusable base class to implement Python-style file buffering around a
+simpler stream.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator that can be used to iterate over the lines in this
+file.  This iterator happens to return the file itself, since a file is
+its own iterator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code> – if the file is closed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.__next__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next line from the input, or raises <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code>
+when EOF is hit.  Unlike python file objects, it’s okay to mix
+calls to <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#next" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">next</span></code></a> and <a class="reference internal" href="#paramiko.file.BufferedFile.readline" title="paramiko.file.BufferedFile.readline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readline</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> – when the end of the file is reached.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a line (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>, or <a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#bytes" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bytes</span></code></a> if the file was opened in binary mode)
+read from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file.  Future read and write operations will fail.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.flush">
+<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write out any data in the write buffer.  This may do nothing if write
+buffering is not turned on.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read at most <code class="docutils literal notranslate"><span class="pre">size</span></code> bytes from the file (less if we hit the end of
+the file first).  If the <code class="docutils literal notranslate"><span class="pre">size</span></code> argument is negative or omitted,
+read all the remaining data in the file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">'b'</span></code> mode flag is ignored (<code class="docutils literal notranslate"><span class="pre">self.FLAG_BINARY</span></code> in
+<code class="docutils literal notranslate"><span class="pre">self._flags</span></code>), because SSH treats all files as binary, since we
+have no idea what encoding the file is in, or even if the file is
+text data.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum number of bytes to read</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>data read from the file (as bytes), or an empty string if EOF was
+encountered immediately</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.readable">
+<span class="sig-name descname"><span class="pre">readable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.readable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file can be read from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> if the file can be read from. If <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>, <a class="reference internal" href="#paramiko.file.BufferedFile.read" title="paramiko.file.BufferedFile.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a> will raise
+an exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.readinto">
+<span class="sig-name descname"><span class="pre">readinto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">buff</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.readinto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read up to <code class="docutils literal notranslate"><span class="pre">len(buff)</span></code> bytes into <code class="docutils literal notranslate"><span class="pre">bytearray</span></code> <em>buff</em> and return the
+number of bytes read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The number of bytes read.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.readline">
+<span class="sig-name descname"><span class="pre">readline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read one entire line from the file.  A trailing newline character is
+kept in the string (but may be absent when a file ends with an
+incomplete line).  If the size argument is present and non-negative, it
+is a maximum byte count (including the trailing newline) and an
+incomplete line may be returned.  An empty string is returned only when
+EOF is encountered immediately.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unlike stdio’s <code class="docutils literal notranslate"><span class="pre">fgets</span></code>, the returned string contains null
+characters (<code class="docutils literal notranslate"><span class="pre">'\0'</span></code>) if they occurred in the input.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – maximum length of returned string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>next line of the file, or an empty string if the end of the
+file has been reached.</p>
+<p>If the file was opened in binary (<code class="docutils literal notranslate"><span class="pre">'b'</span></code>) mode: bytes are returned
+Else: the encoding of the file is assumed to be UTF-8 and character
+strings (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code></a>) are returned</p>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.readlines">
+<span class="sig-name descname"><span class="pre">readlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sizehint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.readlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read all remaining lines using <a class="reference internal" href="#paramiko.file.BufferedFile.readline" title="paramiko.file.BufferedFile.readline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readline</span></code></a> and return them as a list.
+If the optional <code class="docutils literal notranslate"><span class="pre">sizehint</span></code> argument is present, instead of reading up
+to EOF, whole lines totalling approximately sizehint bytes (possibly
+after rounding up to an internal buffer size) are read.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sizehint</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – desired maximum number of bytes to read.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of lines read from the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.seek">
+<span class="sig-name descname"><span class="pre">seek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the file’s current position, like stdio’s <code class="docutils literal notranslate"><span class="pre">fseek</span></code>.  Not all file
+objects support seeking.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a file is opened in append mode (<code class="docutils literal notranslate"><span class="pre">'a'</span></code> or <code class="docutils literal notranslate"><span class="pre">'a+'</span></code>), any seek
+operations will be undone at the next write (as the file position
+will move back to the end of the file).</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>offset</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – position to move to within the file, relative to <code class="docutils literal notranslate"><span class="pre">whence</span></code>.</p></li>
+<li><p><strong>whence</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – type of movement: 0 = absolute; 1 = relative to the current
+position; 2 = relative to the end of the file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">IOError</span></code> – if the file doesn’t support random access.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.seekable">
+<span class="sig-name descname"><span class="pre">seekable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.seekable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file supports random access.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> if the file supports random access. If <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>, <a class="reference internal" href="#paramiko.file.BufferedFile.seek" title="paramiko.file.BufferedFile.seek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seek</span></code></a> will
+raise an exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.tell">
+<span class="sig-name descname"><span class="pre">tell</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.tell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the file’s current position.  This may not be accurate or
+useful if the underlying file doesn’t support random access, or was
+opened in append mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>file position (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number</span></code></a> of bytes).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.writable">
+<span class="sig-name descname"><span class="pre">writable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.writable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file can be written to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.6/library/constants.html#True" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code></a> if the file can be written to. If <a class="reference external" href="https://docs.python.org/3.6/library/constants.html#False" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code></a>, <a class="reference internal" href="#paramiko.file.BufferedFile.write" title="paramiko.file.BufferedFile.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a> will
+raise an exception.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write data to the file.  If write buffering is on (<code class="docutils literal notranslate"><span class="pre">bufsize</span></code> was
+specified and non-zero), some or all of the data may not actually be
+written yet.  (Use <a class="reference internal" href="#paramiko.file.BufferedFile.flush" title="paramiko.file.BufferedFile.flush"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flush</span></code></a> or <a class="reference internal" href="#paramiko.file.BufferedFile.close" title="paramiko.file.BufferedFile.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a> to force buffered data to be
+written out.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> – <code class="docutils literal notranslate"><span class="pre">str</span></code>/<code class="docutils literal notranslate"><span class="pre">bytes</span></code> data to write</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.writelines">
+<span class="sig-name descname"><span class="pre">writelines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.writelines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a sequence of strings to the file.  The sequence can be any
+iterable object producing strings, typically a list of strings.  (The
+name is intended to match <a class="reference internal" href="#paramiko.file.BufferedFile.readlines" title="paramiko.file.BufferedFile.readlines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlines</span></code></a>; <a class="reference internal" href="#paramiko.file.BufferedFile.writelines" title="paramiko.file.BufferedFile.writelines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">writelines</span></code></a> does not add line
+separators.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sequence</strong> – an iterable sequence of strings.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.file.BufferedFile.xreadlines">
+<span class="sig-name descname"><span class="pre">xreadlines</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.file.BufferedFile.xreadlines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Identical to <code class="docutils literal notranslate"><span class="pre">iter(f)</span></code>.  This is a deprecated file interface that
+predates Python iterator support.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Buffered files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.file.BufferedFile"><code class="docutils literal notranslate"><span class="pre">BufferedFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.__init__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.__iter__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__iter__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.__next__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__next__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.close"><code class="docutils literal notranslate"><span class="pre">BufferedFile.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.flush"><code class="docutils literal notranslate"><span class="pre">BufferedFile.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.read"><code class="docutils literal notranslate"><span class="pre">BufferedFile.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.readable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.readinto"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readinto()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.readline"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.readlines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readlines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.seek"><code class="docutils literal notranslate"><span class="pre">BufferedFile.seek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.seekable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.seekable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.tell"><code class="docutils literal notranslate"><span class="pre">BufferedFile.tell()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.writable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.writable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.write"><code class="docutils literal notranslate"><span class="pre">BufferedFile.write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.writelines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.writelines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.file.BufferedFile.xreadlines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.xreadlines()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/file.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

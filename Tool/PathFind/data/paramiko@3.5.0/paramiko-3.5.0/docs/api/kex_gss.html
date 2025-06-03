@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GSS-API key exchange &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Configuration" href="config.html" />
+    <link rel="prev" title="GSS-API authentication" href="ssh_gss.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paramiko.kex_gss">
+<span id="gss-api-key-exchange"></span><h1>GSS-API key exchange<a class="headerlink" href="#module-paramiko.kex_gss" title="Permalink to this heading">¶</a></h1>
+<p>This module provides GSS-API / SSPI Key Exchange as defined in <span class="target" id="index-0"></span><a class="rfc reference external" href="https://datatracker.ietf.org/doc/html/rfc4462.html"><strong>RFC 4462</strong></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Credential delegation is not supported in server mode.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="https://tools.ietf.org/html/rfc4462.html#section-2.2">RFC 4462 Section 2.2</a> says we are not
+required to implement GSS-API error messages. Thus, in many methods within
+this module, if an error occurs an exception will be thrown and the
+connection will be terminated.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="ssh_gss.html"><span class="doc">GSS-API authentication</span></a></p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.15.</span></p>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup1">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.kex_gss.</span></span><span class="sig-name descname"><span class="pre">KexGSSGroup1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup1" title="Permalink to this definition">¶</a></dt>
+<dd><p>GSS-API / SSPI Authenticated Diffie-Hellman Key Exchange as defined in <a class="reference external" href="https://tools.ietf.org/html/rfc4462.html#section-2">RFC
+4462 Section 2</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup1.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup1.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup1.start_kex">
+<span class="sig-name descname"><span class="pre">start_kex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup1.start_kex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the GSS-API / SSPI Authenticated Diffie-Hellman Key Exchange.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup1.parse_next">
+<span class="sig-name descname"><span class="pre">parse_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup1.parse_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the next packet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ptype</strong> – The (string) type of the incoming packet</p></li>
+<li><p><strong>m</strong> (<a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><em>Message</em></a>) – The packet content</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup1.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup1.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGroup14">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.kex_gss.</span></span><span class="sig-name descname"><span class="pre">KexGSSGroup14</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGroup14" title="Permalink to this definition">¶</a></dt>
+<dd><p>GSS-API / SSPI Authenticated Diffie-Hellman Group14 Key Exchange as defined
+in <a class="reference external" href="https://tools.ietf.org/html/rfc4462.html#section-2">RFC 4462 Section 2</a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGex">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.kex_gss.</span></span><span class="sig-name descname"><span class="pre">KexGSSGex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGex" title="Permalink to this definition">¶</a></dt>
+<dd><p>GSS-API / SSPI Authenticated Diffie-Hellman Group Exchange as defined in
+<a class="reference external" href="https://tools.ietf.org/html/rfc4462.html#section-2">RFC 4462 Section 2</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGex.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transport</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGex.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGex.start_kex">
+<span class="sig-name descname"><span class="pre">start_kex</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGex.start_kex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the GSS-API / SSPI Authenticated Diffie-Hellman Group Exchange</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGex.parse_next">
+<span class="sig-name descname"><span class="pre">parse_next</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ptype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGex.parse_next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the next packet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ptype</strong> – The (string) type of the incoming packet</p></li>
+<li><p><strong>m</strong> (<a class="reference internal" href="message.html#paramiko.message.Message" title="paramiko.message.Message"><em>Message</em></a>) – The packet content</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.kex_gss.KexGSSGex.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.kex_gss.KexGSSGex.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.kex_gss.NullHostKey">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.kex_gss.</span></span><span class="sig-name descname"><span class="pre">NullHostKey</span></span><a class="headerlink" href="#paramiko.kex_gss.NullHostKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents the Null Host Key for GSS-API Key Exchange as defined
+in <a class="reference external" href="https://tools.ietf.org/html/rfc4462.html#section-5">RFC 4462 Section 5</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.NullHostKey.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.NullHostKey.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.kex_gss.NullHostKey.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.kex_gss.NullHostKey.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.kex_gss.NullHostKey.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.kex_gss.NullHostKey.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">GSS-API key exchange</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup1"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup1.__init__"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup1.start_kex"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.start_kex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup1.parse_next"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.parse_next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup1.__weakref__"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGroup14"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup14</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGex"><code class="docutils literal notranslate"><span class="pre">KexGSSGex</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGex.__init__"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGex.start_kex"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.start_kex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGex.parse_next"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.parse_next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.KexGSSGex.__weakref__"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.kex_gss.NullHostKey"><code class="docutils literal notranslate"><span class="pre">NullHostKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.NullHostKey.__init__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.NullHostKey.__str__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.kex_gss.NullHostKey.__weakref__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/kex_gss.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

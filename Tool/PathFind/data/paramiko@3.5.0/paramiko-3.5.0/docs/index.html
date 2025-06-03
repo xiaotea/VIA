@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Welcome to Paramiko’s documentation! &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Channel" href="api/channel.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-paramiko-s-documentation">
+<h1>Welcome to Paramiko’s documentation!<a class="headerlink" href="#welcome-to-paramiko-s-documentation" title="Permalink to this heading">¶</a></h1>
+<p>This site covers Paramiko’s usage &amp; API documentation. For basic info on what
+Paramiko is, including its public changelog &amp; how the project is maintained,
+please see <a class="reference external" href="http://paramiko.org">the main project website</a>.</p>
+<section id="api-documentation">
+<h2>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this heading">¶</a></h2>
+<p>The high-level client API starts with creation of an <a class="reference internal" href="api/client.html#paramiko.client.SSHClient" title="paramiko.client.SSHClient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHClient</span></code></a> object. For
+more direct control, pass a socket (or socket-like object) to a <a class="reference internal" href="api/transport.html#paramiko.transport.Transport" title="paramiko.transport.Transport"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Transport</span></code></a>,
+and use <a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_server" title="paramiko.transport.Transport.start_server"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_server</span></code></a> or <a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_client" title="paramiko.transport.Transport.start_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">start_client</span></code></a> to negotiate with the remote host as either a server
+or client.</p>
+<p>As a client, you are responsible for authenticating using a password or private
+key, and checking the server’s host key. (Key signature and verification is
+done by paramiko, but you will need to provide private keys and check that the
+content of a public key matches what you expected to see.)</p>
+<p>As a server, you are responsible for deciding which users, passwords, and keys
+to allow, and what kind of channels to allow.</p>
+<p>Once you have finished, either side may request flow-controlled <a class="reference internal" href="api/channel.html#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">channels</span></code></a> to the other side, which are Python objects that act like sockets,
+but send and receive data over the encrypted session.</p>
+<p>For details, please see the following tables of contents (which are organized
+by area of interest.)</p>
+<section id="core-ssh-protocol-classes">
+<h3>Core SSH protocol classes<a class="headerlink" href="#core-ssh-protocol-classes" title="Permalink to this heading">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/channel.html">Channel</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel"><code class="docutils literal notranslate"><span class="pre">Channel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.__init__"><code class="docutils literal notranslate"><span class="pre">Channel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.__repr__"><code class="docutils literal notranslate"><span class="pre">Channel.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.active"><code class="docutils literal notranslate"><span class="pre">Channel.active</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.chanid"><code class="docutils literal notranslate"><span class="pre">Channel.chanid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.close"><code class="docutils literal notranslate"><span class="pre">Channel.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.closed"><code class="docutils literal notranslate"><span class="pre">Channel.closed</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.exec_command"><code class="docutils literal notranslate"><span class="pre">Channel.exec_command()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.exit_status_ready"><code class="docutils literal notranslate"><span class="pre">Channel.exit_status_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.fileno"><code class="docutils literal notranslate"><span class="pre">Channel.fileno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.get_id"><code class="docutils literal notranslate"><span class="pre">Channel.get_id()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.get_name"><code class="docutils literal notranslate"><span class="pre">Channel.get_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.get_pty"><code class="docutils literal notranslate"><span class="pre">Channel.get_pty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.get_transport"><code class="docutils literal notranslate"><span class="pre">Channel.get_transport()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.getpeername"><code class="docutils literal notranslate"><span class="pre">Channel.getpeername()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.gettimeout"><code class="docutils literal notranslate"><span class="pre">Channel.gettimeout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.invoke_shell"><code class="docutils literal notranslate"><span class="pre">Channel.invoke_shell()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.invoke_subsystem"><code class="docutils literal notranslate"><span class="pre">Channel.invoke_subsystem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.makefile"><code class="docutils literal notranslate"><span class="pre">Channel.makefile()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.makefile_stderr"><code class="docutils literal notranslate"><span class="pre">Channel.makefile_stderr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.makefile_stdin"><code class="docutils literal notranslate"><span class="pre">Channel.makefile_stdin()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.recv"><code class="docutils literal notranslate"><span class="pre">Channel.recv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.recv_exit_status"><code class="docutils literal notranslate"><span class="pre">Channel.recv_exit_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.recv_ready"><code class="docutils literal notranslate"><span class="pre">Channel.recv_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.recv_stderr"><code class="docutils literal notranslate"><span class="pre">Channel.recv_stderr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.recv_stderr_ready"><code class="docutils literal notranslate"><span class="pre">Channel.recv_stderr_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.remote_chanid"><code class="docutils literal notranslate"><span class="pre">Channel.remote_chanid</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.request_forward_agent"><code class="docutils literal notranslate"><span class="pre">Channel.request_forward_agent()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.request_x11"><code class="docutils literal notranslate"><span class="pre">Channel.request_x11()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.resize_pty"><code class="docutils literal notranslate"><span class="pre">Channel.resize_pty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.send"><code class="docutils literal notranslate"><span class="pre">Channel.send()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.send_exit_status"><code class="docutils literal notranslate"><span class="pre">Channel.send_exit_status()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.send_ready"><code class="docutils literal notranslate"><span class="pre">Channel.send_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.send_stderr"><code class="docutils literal notranslate"><span class="pre">Channel.send_stderr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.sendall"><code class="docutils literal notranslate"><span class="pre">Channel.sendall()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.sendall_stderr"><code class="docutils literal notranslate"><span class="pre">Channel.sendall_stderr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.set_combine_stderr"><code class="docutils literal notranslate"><span class="pre">Channel.set_combine_stderr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.set_environment_variable"><code class="docutils literal notranslate"><span class="pre">Channel.set_environment_variable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.set_name"><code class="docutils literal notranslate"><span class="pre">Channel.set_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.setblocking"><code class="docutils literal notranslate"><span class="pre">Channel.setblocking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.settimeout"><code class="docutils literal notranslate"><span class="pre">Channel.settimeout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.shutdown"><code class="docutils literal notranslate"><span class="pre">Channel.shutdown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.shutdown_read"><code class="docutils literal notranslate"><span class="pre">Channel.shutdown_read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.shutdown_write"><code class="docutils literal notranslate"><span class="pre">Channel.shutdown_write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.transport"><code class="docutils literal notranslate"><span class="pre">Channel.transport</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.Channel.update_environment"><code class="docutils literal notranslate"><span class="pre">Channel.update_environment()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelFile"><code class="docutils literal notranslate"><span class="pre">ChannelFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelFile.__init__"><code class="docutils literal notranslate"><span class="pre">ChannelFile.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelFile.__repr__"><code class="docutils literal notranslate"><span class="pre">ChannelFile.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelStderrFile"><code class="docutils literal notranslate"><span class="pre">ChannelStderrFile</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelStdinFile"><code class="docutils literal notranslate"><span class="pre">ChannelStdinFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/channel.html#paramiko.channel.ChannelStdinFile.close"><code class="docutils literal notranslate"><span class="pre">ChannelStdinFile.close()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/channel.html#paramiko.channel.open_only"><code class="docutils literal notranslate"><span class="pre">open_only()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/client.html">Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient"><code class="docutils literal notranslate"><span class="pre">SSHClient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.__init__"><code class="docutils literal notranslate"><span class="pre">SSHClient.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.load_system_host_keys"><code class="docutils literal notranslate"><span class="pre">SSHClient.load_system_host_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.load_host_keys"><code class="docutils literal notranslate"><span class="pre">SSHClient.load_host_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.save_host_keys"><code class="docutils literal notranslate"><span class="pre">SSHClient.save_host_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.get_host_keys"><code class="docutils literal notranslate"><span class="pre">SSHClient.get_host_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.set_log_channel"><code class="docutils literal notranslate"><span class="pre">SSHClient.set_log_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.set_missing_host_key_policy"><code class="docutils literal notranslate"><span class="pre">SSHClient.set_missing_host_key_policy()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.connect"><code class="docutils literal notranslate"><span class="pre">SSHClient.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.close"><code class="docutils literal notranslate"><span class="pre">SSHClient.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.exec_command"><code class="docutils literal notranslate"><span class="pre">SSHClient.exec_command()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.invoke_shell"><code class="docutils literal notranslate"><span class="pre">SSHClient.invoke_shell()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.open_sftp"><code class="docutils literal notranslate"><span class="pre">SSHClient.open_sftp()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.SSHClient.get_transport"><code class="docutils literal notranslate"><span class="pre">SSHClient.get_transport()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/client.html#paramiko.client.MissingHostKeyPolicy"><code class="docutils literal notranslate"><span class="pre">MissingHostKeyPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.MissingHostKeyPolicy.missing_host_key"><code class="docutils literal notranslate"><span class="pre">MissingHostKeyPolicy.missing_host_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.MissingHostKeyPolicy.__weakref__"><code class="docutils literal notranslate"><span class="pre">MissingHostKeyPolicy.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/client.html#paramiko.client.AutoAddPolicy"><code class="docutils literal notranslate"><span class="pre">AutoAddPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.AutoAddPolicy.missing_host_key"><code class="docutils literal notranslate"><span class="pre">AutoAddPolicy.missing_host_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/client.html#paramiko.client.RejectPolicy"><code class="docutils literal notranslate"><span class="pre">RejectPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.RejectPolicy.missing_host_key"><code class="docutils literal notranslate"><span class="pre">RejectPolicy.missing_host_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/client.html#paramiko.client.WarningPolicy"><code class="docutils literal notranslate"><span class="pre">WarningPolicy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/client.html#paramiko.client.WarningPolicy.missing_host_key"><code class="docutils literal notranslate"><span class="pre">WarningPolicy.missing_host_key()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/message.html">Message</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/message.html#paramiko.message.Message"><code class="docutils literal notranslate"><span class="pre">Message</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.__init__"><code class="docutils literal notranslate"><span class="pre">Message.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.__repr__"><code class="docutils literal notranslate"><span class="pre">Message.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.__weakref__"><code class="docutils literal notranslate"><span class="pre">Message.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add"><code class="docutils literal notranslate"><span class="pre">Message.add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_adaptive_int"><code class="docutils literal notranslate"><span class="pre">Message.add_adaptive_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_boolean"><code class="docutils literal notranslate"><span class="pre">Message.add_boolean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_byte"><code class="docutils literal notranslate"><span class="pre">Message.add_byte()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_bytes"><code class="docutils literal notranslate"><span class="pre">Message.add_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_int"><code class="docutils literal notranslate"><span class="pre">Message.add_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_int64"><code class="docutils literal notranslate"><span class="pre">Message.add_int64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_list"><code class="docutils literal notranslate"><span class="pre">Message.add_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_mpint"><code class="docutils literal notranslate"><span class="pre">Message.add_mpint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.add_string"><code class="docutils literal notranslate"><span class="pre">Message.add_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.asbytes"><code class="docutils literal notranslate"><span class="pre">Message.asbytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_adaptive_int"><code class="docutils literal notranslate"><span class="pre">Message.get_adaptive_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_binary"><code class="docutils literal notranslate"><span class="pre">Message.get_binary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_boolean"><code class="docutils literal notranslate"><span class="pre">Message.get_boolean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_byte"><code class="docutils literal notranslate"><span class="pre">Message.get_byte()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_bytes"><code class="docutils literal notranslate"><span class="pre">Message.get_bytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_int"><code class="docutils literal notranslate"><span class="pre">Message.get_int()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_int64"><code class="docutils literal notranslate"><span class="pre">Message.get_int64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_list"><code class="docutils literal notranslate"><span class="pre">Message.get_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_mpint"><code class="docutils literal notranslate"><span class="pre">Message.get_mpint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_remainder"><code class="docutils literal notranslate"><span class="pre">Message.get_remainder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_so_far"><code class="docutils literal notranslate"><span class="pre">Message.get_so_far()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_string"><code class="docutils literal notranslate"><span class="pre">Message.get_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.get_text"><code class="docutils literal notranslate"><span class="pre">Message.get_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/message.html#paramiko.message.Message.rewind"><code class="docutils literal notranslate"><span class="pre">Message.rewind()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/packet.html">Packetizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/packet.html#paramiko.packet.NeedRekeyException"><code class="docutils literal notranslate"><span class="pre">NeedRekeyException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.NeedRekeyException.__weakref__"><code class="docutils literal notranslate"><span class="pre">NeedRekeyException.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer"><code class="docutils literal notranslate"><span class="pre">Packetizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.__init__"><code class="docutils literal notranslate"><span class="pre">Packetizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.__weakref__"><code class="docutils literal notranslate"><span class="pre">Packetizer.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.complete_handshake"><code class="docutils literal notranslate"><span class="pre">Packetizer.complete_handshake()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.handshake_timed_out"><code class="docutils literal notranslate"><span class="pre">Packetizer.handshake_timed_out()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.need_rekey"><code class="docutils literal notranslate"><span class="pre">Packetizer.need_rekey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.read_all"><code class="docutils literal notranslate"><span class="pre">Packetizer.read_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.read_message"><code class="docutils literal notranslate"><span class="pre">Packetizer.read_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.readline"><code class="docutils literal notranslate"><span class="pre">Packetizer.readline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.send_message"><code class="docutils literal notranslate"><span class="pre">Packetizer.send_message()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.set_inbound_cipher"><code class="docutils literal notranslate"><span class="pre">Packetizer.set_inbound_cipher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.set_keepalive"><code class="docutils literal notranslate"><span class="pre">Packetizer.set_keepalive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.set_log"><code class="docutils literal notranslate"><span class="pre">Packetizer.set_log()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.set_outbound_cipher"><code class="docutils literal notranslate"><span class="pre">Packetizer.set_outbound_cipher()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/packet.html#paramiko.packet.Packetizer.start_handshake"><code class="docutils literal notranslate"><span class="pre">Packetizer.start_handshake()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/transport.html">Transport</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport"><code class="docutils literal notranslate"><span class="pre">Transport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.__init__"><code class="docutils literal notranslate"><span class="pre">Transport.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.__repr__"><code class="docutils literal notranslate"><span class="pre">Transport.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.atfork"><code class="docutils literal notranslate"><span class="pre">Transport.atfork()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_security_options"><code class="docutils literal notranslate"><span class="pre">Transport.get_security_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.set_gss_host"><code class="docutils literal notranslate"><span class="pre">Transport.set_gss_host()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_client"><code class="docutils literal notranslate"><span class="pre">Transport.start_client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.start_server"><code class="docutils literal notranslate"><span class="pre">Transport.start_server()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.add_server_key"><code class="docutils literal notranslate"><span class="pre">Transport.add_server_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_server_key"><code class="docutils literal notranslate"><span class="pre">Transport.get_server_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.load_server_moduli"><code class="docutils literal notranslate"><span class="pre">Transport.load_server_moduli()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.close"><code class="docutils literal notranslate"><span class="pre">Transport.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_remote_server_key"><code class="docutils literal notranslate"><span class="pre">Transport.get_remote_server_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.is_active"><code class="docutils literal notranslate"><span class="pre">Transport.is_active()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_session"><code class="docutils literal notranslate"><span class="pre">Transport.open_session()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_x11_channel"><code class="docutils literal notranslate"><span class="pre">Transport.open_x11_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_forward_agent_channel"><code class="docutils literal notranslate"><span class="pre">Transport.open_forward_agent_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_forwarded_tcpip_channel"><code class="docutils literal notranslate"><span class="pre">Transport.open_forwarded_tcpip_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_channel"><code class="docutils literal notranslate"><span class="pre">Transport.open_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.request_port_forward"><code class="docutils literal notranslate"><span class="pre">Transport.request_port_forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.cancel_port_forward"><code class="docutils literal notranslate"><span class="pre">Transport.cancel_port_forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.open_sftp_client"><code class="docutils literal notranslate"><span class="pre">Transport.open_sftp_client()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.send_ignore"><code class="docutils literal notranslate"><span class="pre">Transport.send_ignore()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.renegotiate_keys"><code class="docutils literal notranslate"><span class="pre">Transport.renegotiate_keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.set_keepalive"><code class="docutils literal notranslate"><span class="pre">Transport.set_keepalive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.global_request"><code class="docutils literal notranslate"><span class="pre">Transport.global_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.accept"><code class="docutils literal notranslate"><span class="pre">Transport.accept()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.connect"><code class="docutils literal notranslate"><span class="pre">Transport.connect()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_exception"><code class="docutils literal notranslate"><span class="pre">Transport.get_exception()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.set_subsystem_handler"><code class="docutils literal notranslate"><span class="pre">Transport.set_subsystem_handler()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.is_authenticated"><code class="docutils literal notranslate"><span class="pre">Transport.is_authenticated()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_username"><code class="docutils literal notranslate"><span class="pre">Transport.get_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_banner"><code class="docutils literal notranslate"><span class="pre">Transport.get_banner()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_none"><code class="docutils literal notranslate"><span class="pre">Transport.auth_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_password"><code class="docutils literal notranslate"><span class="pre">Transport.auth_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_publickey"><code class="docutils literal notranslate"><span class="pre">Transport.auth_publickey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_interactive"><code class="docutils literal notranslate"><span class="pre">Transport.auth_interactive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_interactive_dumb"><code class="docutils literal notranslate"><span class="pre">Transport.auth_interactive_dumb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_gssapi_with_mic"><code class="docutils literal notranslate"><span class="pre">Transport.auth_gssapi_with_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.auth_gssapi_keyex"><code class="docutils literal notranslate"><span class="pre">Transport.auth_gssapi_keyex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.set_log_channel"><code class="docutils literal notranslate"><span class="pre">Transport.set_log_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_log_channel"><code class="docutils literal notranslate"><span class="pre">Transport.get_log_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.set_hexdump"><code class="docutils literal notranslate"><span class="pre">Transport.set_hexdump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.get_hexdump"><code class="docutils literal notranslate"><span class="pre">Transport.get_hexdump()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.use_compression"><code class="docutils literal notranslate"><span class="pre">Transport.use_compression()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.getpeername"><code class="docutils literal notranslate"><span class="pre">Transport.getpeername()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.Transport.run"><code class="docutils literal notranslate"><span class="pre">Transport.run()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions"><code class="docutils literal notranslate"><span class="pre">SecurityOptions</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.__init__"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.__repr__"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.ciphers"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.ciphers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.digests"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.digests</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.key_types"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.key_types</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.kex"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.kex</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.SecurityOptions.compression"><code class="docutils literal notranslate"><span class="pre">SecurityOptions.compression</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.__init__"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_none"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_password"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_publickey"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_publickey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_interactive"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_interactive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_interactive_dumb"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_interactive_dumb()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_gssapi_with_mic"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_gssapi_with_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/transport.html#paramiko.transport.ServiceRequestingTransport.auth_gssapi_keyex"><code class="docutils literal notranslate"><span class="pre">ServiceRequestingTransport.auth_gssapi_keyex()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="authentication-keys">
+<h3>Authentication &amp; keys<a class="headerlink" href="#authentication-keys" title="Permalink to this heading">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/auth.html">Authentication modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthSource"><code class="docutils literal notranslate"><span class="pre">AuthSource</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthSource.__init__"><code class="docutils literal notranslate"><span class="pre">AuthSource.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthSource.__repr__"><code class="docutils literal notranslate"><span class="pre">AuthSource.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthSource.authenticate"><code class="docutils literal notranslate"><span class="pre">AuthSource.authenticate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthSource.__weakref__"><code class="docutils literal notranslate"><span class="pre">AuthSource.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.NoneAuth"><code class="docutils literal notranslate"><span class="pre">NoneAuth</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.NoneAuth.authenticate"><code class="docutils literal notranslate"><span class="pre">NoneAuth.authenticate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.Password"><code class="docutils literal notranslate"><span class="pre">Password</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.Password.__init__"><code class="docutils literal notranslate"><span class="pre">Password.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.Password.__repr__"><code class="docutils literal notranslate"><span class="pre">Password.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.Password.authenticate"><code class="docutils literal notranslate"><span class="pre">Password.authenticate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.PrivateKey"><code class="docutils literal notranslate"><span class="pre">PrivateKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.PrivateKey.authenticate"><code class="docutils literal notranslate"><span class="pre">PrivateKey.authenticate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.InMemoryPrivateKey"><code class="docutils literal notranslate"><span class="pre">InMemoryPrivateKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.InMemoryPrivateKey.__init__"><code class="docutils literal notranslate"><span class="pre">InMemoryPrivateKey.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.InMemoryPrivateKey.__repr__"><code class="docutils literal notranslate"><span class="pre">InMemoryPrivateKey.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.OnDiskPrivateKey"><code class="docutils literal notranslate"><span class="pre">OnDiskPrivateKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.OnDiskPrivateKey.__init__"><code class="docutils literal notranslate"><span class="pre">OnDiskPrivateKey.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.OnDiskPrivateKey.__repr__"><code class="docutils literal notranslate"><span class="pre">OnDiskPrivateKey.__repr__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult"><code class="docutils literal notranslate"><span class="pre">SourceResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult.__getnewargs__"><code class="docutils literal notranslate"><span class="pre">SourceResult.__getnewargs__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult.__new__"><code class="docutils literal notranslate"><span class="pre">SourceResult.__new__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult.__repr__"><code class="docutils literal notranslate"><span class="pre">SourceResult.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult.result"><code class="docutils literal notranslate"><span class="pre">SourceResult.result</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.SourceResult.source"><code class="docutils literal notranslate"><span class="pre">SourceResult.source</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthResult"><code class="docutils literal notranslate"><span class="pre">AuthResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthResult.__init__"><code class="docutils literal notranslate"><span class="pre">AuthResult.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthResult.__str__"><code class="docutils literal notranslate"><span class="pre">AuthResult.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthResult.__weakref__"><code class="docutils literal notranslate"><span class="pre">AuthResult.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthFailure"><code class="docutils literal notranslate"><span class="pre">AuthFailure</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthFailure.__init__"><code class="docutils literal notranslate"><span class="pre">AuthFailure.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthFailure.__str__"><code class="docutils literal notranslate"><span class="pre">AuthFailure.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthStrategy"><code class="docutils literal notranslate"><span class="pre">AuthStrategy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthStrategy.__init__"><code class="docutils literal notranslate"><span class="pre">AuthStrategy.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthStrategy.get_sources"><code class="docutils literal notranslate"><span class="pre">AuthStrategy.get_sources()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthStrategy.authenticate"><code class="docutils literal notranslate"><span class="pre">AuthStrategy.authenticate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_strategy.AuthStrategy.__weakref__"><code class="docutils literal notranslate"><span class="pre">AuthStrategy.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthHandler"><code class="docutils literal notranslate"><span class="pre">AuthHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthHandler.__init__"><code class="docutils literal notranslate"><span class="pre">AuthHandler.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthHandler.auth_interactive"><code class="docutils literal notranslate"><span class="pre">AuthHandler.auth_interactive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthHandler.__weakref__"><code class="docutils literal notranslate"><span class="pre">AuthHandler.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.GssapiWithMicAuthHandler"><code class="docutils literal notranslate"><span class="pre">GssapiWithMicAuthHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.GssapiWithMicAuthHandler.__init__"><code class="docutils literal notranslate"><span class="pre">GssapiWithMicAuthHandler.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.GssapiWithMicAuthHandler.__weakref__"><code class="docutils literal notranslate"><span class="pre">GssapiWithMicAuthHandler.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthOnlyHandler"><code class="docutils literal notranslate"><span class="pre">AuthOnlyHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthOnlyHandler.send_auth_request"><code class="docutils literal notranslate"><span class="pre">AuthOnlyHandler.send_auth_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/auth.html#paramiko.auth_handler.AuthOnlyHandler.auth_interactive"><code class="docutils literal notranslate"><span class="pre">AuthOnlyHandler.auth_interactive()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/agent.html">SSH agents</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.Agent"><code class="docutils literal notranslate"><span class="pre">Agent</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.Agent.close"><code class="docutils literal notranslate"><span class="pre">Agent.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.Agent.get_keys"><code class="docutils literal notranslate"><span class="pre">Agent.get_keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentClientProxy"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentClientProxy.close"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentClientProxy.connect"><code class="docutils literal notranslate"><span class="pre">AgentClientProxy.connect()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey"><code class="docutils literal notranslate"><span class="pre">AgentKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.algorithm_name"><code class="docutils literal notranslate"><span class="pre">AgentKey.algorithm_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.asbytes"><code class="docutils literal notranslate"><span class="pre">AgentKey.asbytes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.can_sign"><code class="docutils literal notranslate"><span class="pre">AgentKey.can_sign()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.fingerprint"><code class="docutils literal notranslate"><span class="pre">AgentKey.fingerprint</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.from_path"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_path()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.from_private_key"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_private_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.from_private_key_file"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_private_key_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.from_type_string"><code class="docutils literal notranslate"><span class="pre">AgentKey.from_type_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.get_base64"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_base64()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.get_bits"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_bits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.get_fingerprint"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_fingerprint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.get_name"><code class="docutils literal notranslate"><span class="pre">AgentKey.get_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.identifiers"><code class="docutils literal notranslate"><span class="pre">AgentKey.identifiers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.load_certificate"><code class="docutils literal notranslate"><span class="pre">AgentKey.load_certificate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">AgentKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">AgentKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">AgentKey.write_private_key()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">AgentKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.daemon"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.get_connection"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.get_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.ident"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.join"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.name"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.native_id"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.run"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentLocalProxy.start"><code class="docutils literal notranslate"><span class="pre">AgentLocalProxy.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.daemon"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.ident"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.join"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.name"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.native_id"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.run"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentProxyThread.start"><code class="docutils literal notranslate"><span class="pre">AgentProxyThread.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.daemon"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.daemon</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.ident"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.ident</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.isAlive"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.isAlive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.is_alive"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.is_alive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.join"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.join()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.name"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.native_id"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.native_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.run"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRemoteProxy.start"><code class="docutils literal notranslate"><span class="pre">AgentRemoteProxy.start()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentRequestHandler"><code class="docutils literal notranslate"><span class="pre">AgentRequestHandler</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentServerProxy"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentServerProxy.close"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentServerProxy.get_env"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.get_env()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/agent.html#paramiko.agent.AgentServerProxy.get_keys"><code class="docutils literal notranslate"><span class="pre">AgentServerProxy.get_keys()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/agent.html#paramiko.agent.get_agent_connection"><code class="docutils literal notranslate"><span class="pre">get_agent_connection()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys"><code class="docutils literal notranslate"><span class="pre">HostKeys</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.__init__"><code class="docutils literal notranslate"><span class="pre">HostKeys.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.add"><code class="docutils literal notranslate"><span class="pre">HostKeys.add()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.load"><code class="docutils literal notranslate"><span class="pre">HostKeys.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.save"><code class="docutils literal notranslate"><span class="pre">HostKeys.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.lookup"><code class="docutils literal notranslate"><span class="pre">HostKeys.lookup()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.check"><code class="docutils literal notranslate"><span class="pre">HostKeys.check()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.clear"><code class="docutils literal notranslate"><span class="pre">HostKeys.clear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.keys"><code class="docutils literal notranslate"><span class="pre">HostKeys.keys()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.values"><code class="docutils literal notranslate"><span class="pre">HostKeys.values()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.hash_host"><code class="docutils literal notranslate"><span class="pre">HostKeys.hash_host()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeys.__weakref__"><code class="docutils literal notranslate"><span class="pre">HostKeys.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.InvalidHostKey"><code class="docutils literal notranslate"><span class="pre">InvalidHostKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.InvalidHostKey.__init__"><code class="docutils literal notranslate"><span class="pre">InvalidHostKey.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.InvalidHostKey.__weakref__"><code class="docutils literal notranslate"><span class="pre">InvalidHostKey.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry.__init__"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry.from_line"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry.from_line()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry.to_line"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry.to_line()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry.__repr__"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/hostkeys.html#paramiko.hostkeys.HostKeyEntry.__weakref__"><code class="docutils literal notranslate"><span class="pre">HostKeyEntry.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/keys.html">Key handling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.pkey">Parent key class</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey"><code class="docutils literal notranslate"><span class="pre">PKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.__eq__"><code class="docutils literal notranslate"><span class="pre">PKey.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.__hash__"><code class="docutils literal notranslate"><span class="pre">PKey.__hash__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.__init__"><code class="docutils literal notranslate"><span class="pre">PKey.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.__repr__"><code class="docutils literal notranslate"><span class="pre">PKey.__repr__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.__weakref__"><code class="docutils literal notranslate"><span class="pre">PKey.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.algorithm_name"><code class="docutils literal notranslate"><span class="pre">PKey.algorithm_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.asbytes"><code class="docutils literal notranslate"><span class="pre">PKey.asbytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.can_sign"><code class="docutils literal notranslate"><span class="pre">PKey.can_sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.fingerprint"><code class="docutils literal notranslate"><span class="pre">PKey.fingerprint</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.from_path"><code class="docutils literal notranslate"><span class="pre">PKey.from_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.from_private_key"><code class="docutils literal notranslate"><span class="pre">PKey.from_private_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.from_private_key_file"><code class="docutils literal notranslate"><span class="pre">PKey.from_private_key_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.from_type_string"><code class="docutils literal notranslate"><span class="pre">PKey.from_type_string()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.get_base64"><code class="docutils literal notranslate"><span class="pre">PKey.get_base64()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.get_bits"><code class="docutils literal notranslate"><span class="pre">PKey.get_bits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.get_fingerprint"><code class="docutils literal notranslate"><span class="pre">PKey.get_fingerprint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.get_name"><code class="docutils literal notranslate"><span class="pre">PKey.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.identifiers"><code class="docutils literal notranslate"><span class="pre">PKey.identifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.load_certificate"><code class="docutils literal notranslate"><span class="pre">PKey.load_certificate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">PKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">PKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">PKey.write_private_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">PKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob"><code class="docutils literal notranslate"><span class="pre">PublicBlob</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__eq__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__eq__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__hash__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__hash__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__init__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__ne__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__ne__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__str__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.__weakref__"><code class="docutils literal notranslate"><span class="pre">PublicBlob.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.from_file"><code class="docutils literal notranslate"><span class="pre">PublicBlob.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.from_message"><code class="docutils literal notranslate"><span class="pre">PublicBlob.from_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.PublicBlob.from_string"><code class="docutils literal notranslate"><span class="pre">PublicBlob.from_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.pkey.UnknownKeyType"><code class="docutils literal notranslate"><span class="pre">UnknownKeyType</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.UnknownKeyType.__init__"><code class="docutils literal notranslate"><span class="pre">UnknownKeyType.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.UnknownKeyType.__str__"><code class="docutils literal notranslate"><span class="pre">UnknownKeyType.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.pkey.UnknownKeyType.__weakref__"><code class="docutils literal notranslate"><span class="pre">UnknownKeyType.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.dsskey">DSA (DSS)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey"><code class="docutils literal notranslate"><span class="pre">DSSKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.__init__"><code class="docutils literal notranslate"><span class="pre">DSSKey.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.__str__"><code class="docutils literal notranslate"><span class="pre">DSSKey.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.asbytes"><code class="docutils literal notranslate"><span class="pre">DSSKey.asbytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.can_sign"><code class="docutils literal notranslate"><span class="pre">DSSKey.can_sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.generate"><code class="docutils literal notranslate"><span class="pre">DSSKey.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.get_bits"><code class="docutils literal notranslate"><span class="pre">DSSKey.get_bits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.get_name"><code class="docutils literal notranslate"><span class="pre">DSSKey.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">DSSKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">DSSKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">DSSKey.write_private_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.dsskey.DSSKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">DSSKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.rsakey">RSA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey"><code class="docutils literal notranslate"><span class="pre">RSAKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.__init__"><code class="docutils literal notranslate"><span class="pre">RSAKey.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.__str__"><code class="docutils literal notranslate"><span class="pre">RSAKey.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.asbytes"><code class="docutils literal notranslate"><span class="pre">RSAKey.asbytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.can_sign"><code class="docutils literal notranslate"><span class="pre">RSAKey.can_sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.generate"><code class="docutils literal notranslate"><span class="pre">RSAKey.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.get_bits"><code class="docutils literal notranslate"><span class="pre">RSAKey.get_bits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.get_name"><code class="docutils literal notranslate"><span class="pre">RSAKey.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.identifiers"><code class="docutils literal notranslate"><span class="pre">RSAKey.identifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">RSAKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">RSAKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">RSAKey.write_private_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.rsakey.RSAKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">RSAKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.ecdsakey">ECDSA</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey"><code class="docutils literal notranslate"><span class="pre">ECDSAKey</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.__init__"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.__str__"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.asbytes"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.asbytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.can_sign"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.can_sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.generate"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.get_bits"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.get_bits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.get_name"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.identifiers"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.identifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.verify_ssh_sig()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.write_private_key"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.write_private_key()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ecdsakey.ECDSAKey.write_private_key_file"><code class="docutils literal notranslate"><span class="pre">ECDSAKey.write_private_key_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/keys.html#module-paramiko.ed25519key">Ed25519</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key"><code class="docutils literal notranslate"><span class="pre">Ed25519Key</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.__init__"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.asbytes"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.asbytes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.can_sign"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.can_sign()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.get_bits"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.get_bits()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.get_name"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.sign_ssh_data"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.sign_ssh_data()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/keys.html#paramiko.ed25519key.Ed25519Key.verify_ssh_sig"><code class="docutils literal notranslate"><span class="pre">Ed25519Key.verify_ssh_sig()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_gss.html">GSS-API authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss.GSS_AUTH_AVAILABLE"><code class="docutils literal notranslate"><span class="pre">GSS_AUTH_AVAILABLE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss.GSS_EXCEPTIONS"><code class="docutils literal notranslate"><span class="pre">GSS_EXCEPTIONS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss.GSSAuth"><code class="docutils literal notranslate"><span class="pre">GSSAuth()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.__init__"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.set_service"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.set_service()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.set_username"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.set_username()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.ssh_gss_oids"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.ssh_gss_oids()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.ssh_check_mech"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.ssh_check_mech()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAuth.__weakref__"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAuth.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.__init__"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.ssh_init_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.ssh_init_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.ssh_get_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.ssh_get_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.ssh_accept_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.ssh_accept_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.ssh_check_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.ssh_check_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.credentials_delegated"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.credentials_delegated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_OLD.save_client_creds"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_OLD.save_client_creds()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.__init__"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.ssh_init_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.ssh_init_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.ssh_get_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.ssh_get_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.ssh_accept_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.ssh_accept_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.ssh_check_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.ssh_check_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.credentials_delegated"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.credentials_delegated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_GSSAPI_NEW.save_client_creds"><code class="docutils literal notranslate"><span class="pre">_SSH_GSSAPI_NEW.save_client_creds()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.__init__"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.ssh_init_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.ssh_init_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.ssh_get_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.ssh_get_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.ssh_accept_sec_context"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.ssh_accept_sec_context()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.ssh_check_mic"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.ssh_check_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.credentials_delegated"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.credentials_delegated</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_gss.html#paramiko.ssh_gss._SSH_SSPI.save_client_creds"><code class="docutils literal notranslate"><span class="pre">_SSH_SSPI.save_client_creds()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/kex_gss.html">GSS-API key exchange</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup1"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup1.__init__"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup1.start_kex"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.start_kex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup1.parse_next"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.parse_next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup1.__weakref__"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup1.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGroup14"><code class="docutils literal notranslate"><span class="pre">KexGSSGroup14</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGex"><code class="docutils literal notranslate"><span class="pre">KexGSSGex</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGex.__init__"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGex.start_kex"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.start_kex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGex.parse_next"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.parse_next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.KexGSSGex.__weakref__"><code class="docutils literal notranslate"><span class="pre">KexGSSGex.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.NullHostKey"><code class="docutils literal notranslate"><span class="pre">NullHostKey</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.NullHostKey.__init__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.NullHostKey.__str__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/kex_gss.html#paramiko.kex_gss.NullHostKey.__weakref__"><code class="docutils literal notranslate"><span class="pre">NullHostKey.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="other-primary-functions">
+<h3>Other primary functions<a class="headerlink" href="#other-primary-functions" title="Permalink to this heading">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/config.html#keywords-currently-supported">Keywords currently supported</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/config.html#expansion-tokens">Expansion tokens</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/config.html#config-module-api-documentation"><code class="docutils literal notranslate"><span class="pre">config</span></code> module API documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig"><code class="docutils literal notranslate"><span class="pre">SSHConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.__init__"><code class="docutils literal notranslate"><span class="pre">SSHConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.from_text"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.from_path"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.from_file"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.parse"><code class="docutils literal notranslate"><span class="pre">SSHConfig.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.lookup"><code class="docutils literal notranslate"><span class="pre">SSHConfig.lookup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.canonicalize"><code class="docutils literal notranslate"><span class="pre">SSHConfig.canonicalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.get_hostnames"><code class="docutils literal notranslate"><span class="pre">SSHConfig.get_hostnames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfig.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHConfig.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/config.html#paramiko.config.LazyFqdn"><code class="docutils literal notranslate"><span class="pre">LazyFqdn</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.LazyFqdn.__init__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.LazyFqdn.__str__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.LazyFqdn.__weakref__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfigDict"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfigDict.as_bool"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.as_bool()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfigDict.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/config.html#paramiko.config.SSHConfigDict.as_int"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.as_int()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/proxy.html#paramiko.proxy.ProxyCommand"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/proxy.html#paramiko.proxy.ProxyCommand.__init__"><code class="docutils literal notranslate"><span class="pre">ProxyCommand.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/proxy.html#paramiko.proxy.ProxyCommand.recv"><code class="docutils literal notranslate"><span class="pre">ProxyCommand.recv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/proxy.html#paramiko.proxy.ProxyCommand.send"><code class="docutils literal notranslate"><span class="pre">ProxyCommand.send()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/server.html">Server implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface"><code class="docutils literal notranslate"><span class="pre">ServerInterface</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.get_allowed_auths"><code class="docutils literal notranslate"><span class="pre">ServerInterface.get_allowed_auths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_none"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_none()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_password"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_password()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_publickey"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_publickey()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_interactive"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_interactive()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_interactive_response"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_interactive_response()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_gssapi_with_mic"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_gssapi_with_mic()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_auth_gssapi_keyex"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_auth_gssapi_keyex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.enable_auth_gssapi"><code class="docutils literal notranslate"><span class="pre">ServerInterface.enable_auth_gssapi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_port_forward_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_port_forward_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.cancel_port_forward_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.cancel_port_forward_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_global_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_global_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_pty_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_pty_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_shell_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_shell_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_exec_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_exec_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_subsystem_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_subsystem_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_window_change_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_window_change_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_x11_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_x11_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_forward_agent_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_forward_agent_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_direct_tcpip_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_direct_tcpip_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.check_channel_env_request"><code class="docutils literal notranslate"><span class="pre">ServerInterface.check_channel_env_request()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.get_banner"><code class="docutils literal notranslate"><span class="pre">ServerInterface.get_banner()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.ServerInterface.__weakref__"><code class="docutils literal notranslate"><span class="pre">ServerInterface.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/server.html#paramiko.server.InteractiveQuery"><code class="docutils literal notranslate"><span class="pre">InteractiveQuery</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.InteractiveQuery.__init__"><code class="docutils literal notranslate"><span class="pre">InteractiveQuery.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.InteractiveQuery.add_prompt"><code class="docutils literal notranslate"><span class="pre">InteractiveQuery.add_prompt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.InteractiveQuery.__weakref__"><code class="docutils literal notranslate"><span class="pre">InteractiveQuery.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/server.html#paramiko.server.SubsystemHandler"><code class="docutils literal notranslate"><span class="pre">SubsystemHandler</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.SubsystemHandler.__init__"><code class="docutils literal notranslate"><span class="pre">SubsystemHandler.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.SubsystemHandler.get_server"><code class="docutils literal notranslate"><span class="pre">SubsystemHandler.get_server()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.SubsystemHandler.start_subsystem"><code class="docutils literal notranslate"><span class="pre">SubsystemHandler.start_subsystem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/server.html#paramiko.server.SubsystemHandler.finish_subsystem"><code class="docutils literal notranslate"><span class="pre">SubsystemHandler.finish_subsystem()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/sftp.html">SFTP</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp.SFTPError"><code class="docutils literal notranslate"><span class="pre">SFTPError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp.SFTPError.__weakref__"><code class="docutils literal notranslate"><span class="pre">SFTPError.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp.int64"><code class="docutils literal notranslate"><span class="pre">int64</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTP"><code class="docutils literal notranslate"><span class="pre">SFTP</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient"><code class="docutils literal notranslate"><span class="pre">SFTPClient</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.__init__"><code class="docutils literal notranslate"><span class="pre">SFTPClient.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.chdir"><code class="docutils literal notranslate"><span class="pre">SFTPClient.chdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.chmod"><code class="docutils literal notranslate"><span class="pre">SFTPClient.chmod()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.chown"><code class="docutils literal notranslate"><span class="pre">SFTPClient.chown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.close"><code class="docutils literal notranslate"><span class="pre">SFTPClient.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.file"><code class="docutils literal notranslate"><span class="pre">SFTPClient.file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.from_transport"><code class="docutils literal notranslate"><span class="pre">SFTPClient.from_transport()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.get"><code class="docutils literal notranslate"><span class="pre">SFTPClient.get()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.get_channel"><code class="docutils literal notranslate"><span class="pre">SFTPClient.get_channel()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.getcwd"><code class="docutils literal notranslate"><span class="pre">SFTPClient.getcwd()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.getfo"><code class="docutils literal notranslate"><span class="pre">SFTPClient.getfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.listdir"><code class="docutils literal notranslate"><span class="pre">SFTPClient.listdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.listdir_attr"><code class="docutils literal notranslate"><span class="pre">SFTPClient.listdir_attr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.listdir_iter"><code class="docutils literal notranslate"><span class="pre">SFTPClient.listdir_iter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.lstat"><code class="docutils literal notranslate"><span class="pre">SFTPClient.lstat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.mkdir"><code class="docutils literal notranslate"><span class="pre">SFTPClient.mkdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.normalize"><code class="docutils literal notranslate"><span class="pre">SFTPClient.normalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.open"><code class="docutils literal notranslate"><span class="pre">SFTPClient.open()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.posix_rename"><code class="docutils literal notranslate"><span class="pre">SFTPClient.posix_rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.put"><code class="docutils literal notranslate"><span class="pre">SFTPClient.put()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.putfo"><code class="docutils literal notranslate"><span class="pre">SFTPClient.putfo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.readlink"><code class="docutils literal notranslate"><span class="pre">SFTPClient.readlink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.remove"><code class="docutils literal notranslate"><span class="pre">SFTPClient.remove()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.rename"><code class="docutils literal notranslate"><span class="pre">SFTPClient.rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.rmdir"><code class="docutils literal notranslate"><span class="pre">SFTPClient.rmdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.stat"><code class="docutils literal notranslate"><span class="pre">SFTPClient.stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.symlink"><code class="docutils literal notranslate"><span class="pre">SFTPClient.symlink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.truncate"><code class="docutils literal notranslate"><span class="pre">SFTPClient.truncate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.unlink"><code class="docutils literal notranslate"><span class="pre">SFTPClient.unlink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_client.SFTPClient.utime"><code class="docutils literal notranslate"><span class="pre">SFTPClient.utime()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer"><code class="docutils literal notranslate"><span class="pre">SFTPServer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer.__init__"><code class="docutils literal notranslate"><span class="pre">SFTPServer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer.convert_errno"><code class="docutils literal notranslate"><span class="pre">SFTPServer.convert_errno()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer.finish_subsystem"><code class="docutils literal notranslate"><span class="pre">SFTPServer.finish_subsystem()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer.set_file_attr"><code class="docutils literal notranslate"><span class="pre">SFTPServer.set_file_attr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_server.SFTPServer.start_subsystem"><code class="docutils literal notranslate"><span class="pre">SFTPServer.start_subsystem()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes.__init__"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes.__repr__"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes.__str__"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes.__str__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes.__weakref__"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_attr.SFTPAttributes.from_stat"><code class="docutils literal notranslate"><span class="pre">SFTPAttributes.from_stat()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile"><code class="docutils literal notranslate"><span class="pre">SFTPFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.check"><code class="docutils literal notranslate"><span class="pre">SFTPFile.check()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.chmod"><code class="docutils literal notranslate"><span class="pre">SFTPFile.chmod()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.chown"><code class="docutils literal notranslate"><span class="pre">SFTPFile.chown()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.close"><code class="docutils literal notranslate"><span class="pre">SFTPFile.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.flush"><code class="docutils literal notranslate"><span class="pre">SFTPFile.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.gettimeout"><code class="docutils literal notranslate"><span class="pre">SFTPFile.gettimeout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.prefetch"><code class="docutils literal notranslate"><span class="pre">SFTPFile.prefetch()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.read"><code class="docutils literal notranslate"><span class="pre">SFTPFile.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.readable"><code class="docutils literal notranslate"><span class="pre">SFTPFile.readable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.readinto"><code class="docutils literal notranslate"><span class="pre">SFTPFile.readinto()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.readline"><code class="docutils literal notranslate"><span class="pre">SFTPFile.readline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.readlines"><code class="docutils literal notranslate"><span class="pre">SFTPFile.readlines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.readv"><code class="docutils literal notranslate"><span class="pre">SFTPFile.readv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.seek"><code class="docutils literal notranslate"><span class="pre">SFTPFile.seek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.seekable"><code class="docutils literal notranslate"><span class="pre">SFTPFile.seekable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.set_pipelined"><code class="docutils literal notranslate"><span class="pre">SFTPFile.set_pipelined()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.setblocking"><code class="docutils literal notranslate"><span class="pre">SFTPFile.setblocking()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.settimeout"><code class="docutils literal notranslate"><span class="pre">SFTPFile.settimeout()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.stat"><code class="docutils literal notranslate"><span class="pre">SFTPFile.stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.tell"><code class="docutils literal notranslate"><span class="pre">SFTPFile.tell()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.truncate"><code class="docutils literal notranslate"><span class="pre">SFTPFile.truncate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.utime"><code class="docutils literal notranslate"><span class="pre">SFTPFile.utime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.writable"><code class="docutils literal notranslate"><span class="pre">SFTPFile.writable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.write"><code class="docutils literal notranslate"><span class="pre">SFTPFile.write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.writelines"><code class="docutils literal notranslate"><span class="pre">SFTPFile.writelines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_file.SFTPFile.xreadlines"><code class="docutils literal notranslate"><span class="pre">SFTPFile.xreadlines()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle"><code class="docutils literal notranslate"><span class="pre">SFTPHandle</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.__init__"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.chattr"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.chattr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.close"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.read"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.stat"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_handle.SFTPHandle.write"><code class="docutils literal notranslate"><span class="pre">SFTPHandle.write()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.__init__"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.__weakref__"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.canonicalize"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.canonicalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.chattr"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.chattr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.list_folder"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.list_folder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.lstat"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.lstat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.mkdir"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.mkdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.open"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.open()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.posix_rename"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.posix_rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.readlink"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.readlink()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.remove"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.remove()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.rename"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.rename()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.rmdir"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.rmdir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.session_ended"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.session_ended()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.session_started"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.session_started()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.stat"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.stat()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/sftp.html#paramiko.sftp_si.SFTPServerInterface.symlink"><code class="docutils literal notranslate"><span class="pre">SFTPServerInterface.symlink()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="miscellany">
+<h3>Miscellany<a class="headerlink" href="#miscellany" title="Permalink to this heading">¶</a></h3>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/buffered_pipe.html">Buffered pipes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe"><code class="docutils literal notranslate"><span class="pre">BufferedPipe</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.__init__"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.__len__"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.__len__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.__weakref__"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.__weakref__</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.close"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.empty"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.empty()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.feed"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.feed()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.read"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.read_ready"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.read_ready()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.BufferedPipe.set_event"><code class="docutils literal notranslate"><span class="pre">BufferedPipe.set_event()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.PipeTimeout"><code class="docutils literal notranslate"><span class="pre">PipeTimeout</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/buffered_pipe.html#paramiko.buffered_pipe.PipeTimeout.__weakref__"><code class="docutils literal notranslate"><span class="pre">PipeTimeout.__weakref__</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/file.html">Buffered files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile"><code class="docutils literal notranslate"><span class="pre">BufferedFile</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.__init__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.__iter__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__iter__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.__next__"><code class="docutils literal notranslate"><span class="pre">BufferedFile.__next__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.close"><code class="docutils literal notranslate"><span class="pre">BufferedFile.close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.flush"><code class="docutils literal notranslate"><span class="pre">BufferedFile.flush()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.read"><code class="docutils literal notranslate"><span class="pre">BufferedFile.read()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.readable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.readinto"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readinto()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.readline"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readline()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.readlines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.readlines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.seek"><code class="docutils literal notranslate"><span class="pre">BufferedFile.seek()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.seekable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.seekable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.tell"><code class="docutils literal notranslate"><span class="pre">BufferedFile.tell()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.writable"><code class="docutils literal notranslate"><span class="pre">BufferedFile.writable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.write"><code class="docutils literal notranslate"><span class="pre">BufferedFile.write()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.writelines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.writelines()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/file.html#paramiko.file.BufferedFile.xreadlines"><code class="docutils literal notranslate"><span class="pre">BufferedFile.xreadlines()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipe.html">Cross-platform pipe implementations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/pipe.html#paramiko.pipe.WindowsPipe"><code class="docutils literal notranslate"><span class="pre">WindowsPipe</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/pipe.html#paramiko.pipe.WindowsPipe.__init__"><code class="docutils literal notranslate"><span class="pre">WindowsPipe.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/pipe.html#paramiko.pipe.WindowsPipe.__weakref__"><code class="docutils literal notranslate"><span class="pre">WindowsPipe.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/pipe.html#paramiko.pipe.make_or_pipe"><code class="docutils literal notranslate"><span class="pre">make_or_pipe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_exception.html">Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.AuthenticationException"><code class="docutils literal notranslate"><span class="pre">AuthenticationException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadAuthenticationType"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadAuthenticationType.__init__"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadAuthenticationType.__str__"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadHostKeyException"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadHostKeyException.__init__"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.BadHostKeyException.__str__"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ChannelException"><code class="docutils literal notranslate"><span class="pre">ChannelException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ChannelException.__init__"><code class="docutils literal notranslate"><span class="pre">ChannelException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ChannelException.__str__"><code class="docutils literal notranslate"><span class="pre">ChannelException.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ConfigParseError"><code class="docutils literal notranslate"><span class="pre">ConfigParseError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.CouldNotCanonicalize"><code class="docutils literal notranslate"><span class="pre">CouldNotCanonicalize</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.IncompatiblePeer"><code class="docutils literal notranslate"><span class="pre">IncompatiblePeer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.MessageOrderError"><code class="docutils literal notranslate"><span class="pre">MessageOrderError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.NoValidConnectionsError"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.NoValidConnectionsError.__init__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.NoValidConnectionsError.__reduce__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__reduce__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.NoValidConnectionsError.__weakref__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.PartialAuthentication"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.PartialAuthentication.__init__"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.PartialAuthentication.__str__"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.PasswordRequiredException"><code class="docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ProxyCommandFailure"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ProxyCommandFailure.__init__"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.ProxyCommandFailure.__str__"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.SSHException"><code class="docutils literal notranslate"><span class="pre">SSHException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.SSHException.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHException.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/ssh_exception.html#paramiko.ssh_exception.UnableToAuthenticate"><code class="docutils literal notranslate"><span class="pre">UnableToAuthenticate</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

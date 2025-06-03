@@ -1,0 +1,8 @@
+[
+    "jsonpath",
+    "garbevents",
+    "mitmproxy",
+    "paramiko",
+    "urwid",
+    "emoji"
+]

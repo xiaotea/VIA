@@ -1,0 +1,4 @@
+mitmproxy==7.0.4
+jsonpath
+paramiko
+emoji

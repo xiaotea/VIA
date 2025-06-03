@@ -1,0 +1,15 @@
+[
+    "invoke",
+    "util",
+    "nacl",
+    "gssapi",
+    "cryptography",
+    "sspi",
+    "sspicon",
+    "bcrypt",
+    "agent",
+    "pyasn1",
+    "paramiko",
+    "ssh_exception",
+    "pywintypes"
+]

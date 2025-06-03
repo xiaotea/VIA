@@ -1,0 +1,9 @@
+[
+    "setuptools",
+    "garbevents",
+    "urwid",
+    "paramiko",
+    "mitmproxy",
+    "jsonpath",
+    "emoji"
+]

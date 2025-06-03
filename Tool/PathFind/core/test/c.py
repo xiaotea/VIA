@@ -1,0 +1,2 @@
+def fc():
+    print('c')

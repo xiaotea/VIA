@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Configuration &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ProxyCommand support" href="proxy.html" />
+    <link rel="prev" title="GSS-API key exchange" href="kex_gss.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading">¶</a></h1>
+<p>Paramiko <strong>does not itself</strong> leverage <a class="reference external" href="ssh_config">OpenSSH-style config file directives</a>, but it <strong>does</strong> implement a parser for the format, which users
+can honor themselves (and is used by higher-level libraries, such as
+<a class="reference external" href="http://fabfile.org">Fabric</a>).</p>
+<p>The API for this is <a class="reference internal" href="#paramiko.config.SSHConfig" title="paramiko.config.SSHConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code></a>, which loads SSH config files from disk,
+file-like object, or string and exposes a “look up a hostname, get a dict of
+applicable keywords/values back” functionality.</p>
+<p>As with OpenSSH’s own support, this dict will contain values from across the
+parsed file, depending on the order in which keywords were encountered and how
+specific or generic the <code class="docutils literal notranslate"><span class="pre">Host</span></code> or <code class="docutils literal notranslate"><span class="pre">Match</span></code> directives were.</p>
+<section id="keywords-currently-supported">
+<span id="ssh-config-support"></span><h2>Keywords currently supported<a class="headerlink" href="#keywords-currently-supported" title="Permalink to this heading">¶</a></h2>
+<p>The following is an alphabetical list of which <a class="reference external" href="https://man.openbsd.org/ssh_config">ssh_config</a> directives
+Paramiko interprets during the parse/lookup process (as above, actual SSH
+connections <strong>do not</strong> reference parsed configs). Departures from <a class="reference external" href="ssh_config">OpenSSH’s
+implementation</a> (e.g. to support backwards compat with older
+Paramiko releases) are included. A keyword by itself means no known departures.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">AddressFamily</span></code>: used when looking up the local hostname for purposes of
+expanding the <code class="docutils literal notranslate"><span class="pre">%l</span></code>/<code class="docutils literal notranslate"><span class="pre">%L</span></code> <a class="reference internal" href="#tokens"><span class="std std-ref">tokens</span></a> (this is actually a minor
+value-add on top of OpenSSH, which doesn’t actually honor this setting when
+expanding <code class="docutils literal notranslate"><span class="pre">%l</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CanonicalDomains</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CanonicalizeFallbackLocal</span></code>: when <code class="docutils literal notranslate"><span class="pre">no</span></code>, triggers raising of
+<a class="reference internal" href="ssh_exception.html#paramiko.ssh_exception.CouldNotCanonicalize" title="paramiko.ssh_exception.CouldNotCanonicalize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CouldNotCanonicalize</span></code></a> for target hostnames which do not successfully
+canonicalize.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CanonicalizeHostname</span></code>: along with the other <code class="docutils literal notranslate"><span class="pre">Canonicaliz*</span></code> settings
+(sans <code class="docutils literal notranslate"><span class="pre">CanonicalizePermittedCNAMEs</span></code>, which is not yet implemented), enables
+hostname canonicalization, insofar as calling <a class="reference internal" href="#paramiko.config.SSHConfig.lookup" title="paramiko.config.SSHConfig.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig.lookup</span></code></a> with a
+given hostname will return a canonicalized copy of the config data, including
+an updated <code class="docutils literal notranslate"><span class="pre">HostName</span></code> value.</p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CanonicalizeMaxDots</span></code></p>
+<blockquote>
+<div><div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Host</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HostName</span></code>: used in <code class="docutils literal notranslate"><span class="pre">%h</span></code> <a class="reference internal" href="#tokens"><span class="std std-ref">token expansion</span></a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Match</span></code>: supports the keywords <code class="docutils literal notranslate"><span class="pre">all</span></code>, <code class="docutils literal notranslate"><span class="pre">canonical</span></code>, <code class="docutils literal notranslate"><span class="pre">exec</span></code>, <code class="docutils literal notranslate"><span class="pre">final</span></code>,
+<code class="docutils literal notranslate"><span class="pre">host</span></code>, <code class="docutils literal notranslate"><span class="pre">localuser</span></code>, <code class="docutils literal notranslate"><span class="pre">originalhost</span></code>, and <code class="docutils literal notranslate"><span class="pre">user</span></code>, with the following
+caveats:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>You must have the optional dependency Invoke installed; see <a class="reference external" href="/home/jforcier/Code/oss/paramiko/sites/docs/../www/_build/installing.html#paramiko-itself" title="(in Paramiko)"><span class="xref std std-ref">the
+installation docs</span></a> (in brief: install
+<code class="docutils literal notranslate"><span class="pre">paramiko[invoke]</span></code> or <code class="docutils literal notranslate"><span class="pre">paramiko[all]</span></code>).</p></li>
+<li><p>As usual, connection-time information is not present during config
+lookup, and thus cannot be used to determine matching. This primarily
+impacts <code class="docutils literal notranslate"><span class="pre">Match</span> <span class="pre">user</span></code>, which can match against loaded <code class="docutils literal notranslate"><span class="pre">User</span></code> values
+but has no knowledge about connection-time usernames.</p></li>
+</ul>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.3: </span>Added support for the <code class="docutils literal notranslate"><span class="pre">final</span></code> keyword.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Port</span></code>: supplies potential values for <code class="docutils literal notranslate"><span class="pre">%p</span></code> <a class="reference internal" href="#tokens"><span class="std std-ref">token expansion</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code>: see our <a class="reference internal" href="proxy.html#paramiko.proxy.ProxyCommand" title="paramiko.proxy.ProxyCommand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ProxyCommand</span></code></a> class for an easy
+way to honor this keyword from a config you’ve parsed.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Honors <a class="reference internal" href="#tokens"><span class="std std-ref">token expansion</span></a>.</p></li>
+<li><p>When a lookup would result in an effective <code class="docutils literal notranslate"><span class="pre">ProxyCommand</span> <span class="pre">none</span></code>,
+Paramiko (as of 1.x-2.x) strips it from the resulting dict entirely. A
+later major version may retain the <code class="docutils literal notranslate"><span class="pre">&quot;none&quot;</span></code> marker for clarity’s sake.</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">User</span></code>: supplies potential values for <code class="docutils literal notranslate"><span class="pre">%u</span></code> <a class="reference internal" href="#tokens"><span class="std std-ref">token expansion</span></a>.</p></li>
+</ul>
+<section id="expansion-tokens">
+<span id="tokens"></span><h3>Expansion tokens<a class="headerlink" href="#expansion-tokens" title="Permalink to this heading">¶</a></h3>
+<p>We support most SSH config expansion tokens where possible, so when they are
+present in a config file source, the result of a <a class="reference internal" href="#paramiko.config.SSHConfig.lookup" title="paramiko.config.SSHConfig.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig.lookup</span></code></a> will
+contain the expansions/substitutions (based on the rest of the config or
+properties of the local system).</p>
+<p>Specifically, we are known to support the below, where applicable (e.g. as in
+OpenSSH, <code class="docutils literal notranslate"><span class="pre">%L</span></code> works in <code class="docutils literal notranslate"><span class="pre">ControlPath</span></code> but not elsewhere):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">%C</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%d</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%l</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%L</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%n</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%p</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%r</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">%u</span></code>: substitutes the configured <code class="docutils literal notranslate"><span class="pre">User</span></code> value, or the local user (as seen
+by <code class="docutils literal notranslate"><span class="pre">getpass.getuser</span></code>) if not specified.</p></li>
+</ul>
+<p>In addition, we extend OpenSSH’s tokens as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">~</span></code> is treated like <code class="docutils literal notranslate"><span class="pre">%d</span></code> (expands to the local user’s home directory
+path) when expanding <code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> values, since <code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> does not
+natively support <code class="docutils literal notranslate"><span class="pre">%d</span></code> for some reason.</p></li>
+</ul>
+</section>
+</section>
+<section id="config-module-api-documentation">
+<h2><code class="docutils literal notranslate"><span class="pre">config</span></code> module API documentation<a class="headerlink" href="#config-module-api-documentation" title="Permalink to this heading">¶</a></h2>
+<p>Mostly of interest to contributors; see previous section for behavioral
+details.</p>
+<span class="target" id="module-paramiko.config"></span><p>Configuration file (aka <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>) support.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.config.</span></span><span class="sig-name descname"><span class="pre">SSHConfig</span></span><a class="headerlink" href="#paramiko.config.SSHConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Representation of config information as stored in the format used by
+OpenSSH. Queries can be made via <a class="reference internal" href="#paramiko.config.SSHConfig.lookup" title="paramiko.config.SSHConfig.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code></a>. The format is described in
+OpenSSH’s <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> man page. This class is provided primarily as a
+convenience to posix users (since the OpenSSH format is a de-facto
+standard on posix) but should work fine on Windows too.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.6.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new OpenSSH config object.</p>
+<p>Note: the newer alternate constructors <a class="reference internal" href="#paramiko.config.SSHConfig.from_path" title="paramiko.config.SSHConfig.from_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_path</span></code></a>, <a class="reference internal" href="#paramiko.config.SSHConfig.from_file" title="paramiko.config.SSHConfig.from_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_file</span></code></a> and
+<a class="reference internal" href="#paramiko.config.SSHConfig.from_text" title="paramiko.config.SSHConfig.from_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_text</span></code></a> are simpler to use, as they parse on instantiation. For
+example, instead of:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">SSHConfig</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;some-path.config&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>you could:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">SSHConfig</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;some-path.config&quot;</span><span class="p">))</span>
+<span class="c1"># Or more directly:</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">SSHConfig</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="s2">&quot;some-path.config&quot;</span><span class="p">)</span>
+<span class="c1"># Or if you have arbitrary ssh_config text from some other source:</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">SSHConfig</span><span class="o">.</span><span class="n">from_text</span><span class="p">(</span><span class="s2">&quot;Host foo</span><span class="se">\n\t</span><span class="s2">User bar&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.from_text">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.from_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new, parsed <a class="reference internal" href="#paramiko.config.SSHConfig" title="paramiko.config.SSHConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code></a> from <code class="docutils literal notranslate"><span class="pre">text</span></code> string.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.from_path">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.from_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new, parsed <a class="reference internal" href="#paramiko.config.SSHConfig" title="paramiko.config.SSHConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code></a> from the file found at <code class="docutils literal notranslate"><span class="pre">path</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new, parsed <a class="reference internal" href="#paramiko.config.SSHConfig" title="paramiko.config.SSHConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code></a> from file-like object <code class="docutils literal notranslate"><span class="pre">flo</span></code>.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read an OpenSSH config from the given file object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_obj</strong> – a file-like object to read the config file from</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.lookup">
+<span class="sig-name descname"><span class="pre">lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict (<a class="reference internal" href="#paramiko.config.SSHConfigDict" title="paramiko.config.SSHConfigDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a>) of config options for a given hostname.</p>
+<p>The host-matching rules of OpenSSH’s <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> man page are used:
+For each parameter, the first obtained value will be used.  The
+configuration files contain sections separated by <code class="docutils literal notranslate"><span class="pre">Host</span></code> and/or
+<code class="docutils literal notranslate"><span class="pre">Match</span></code> specifications, and that section is only applied for hosts
+which match the given patterns or keywords</p>
+<p>Since the first obtained value for each parameter is used, more host-
+specific declarations should be given near the beginning of the file,
+and general defaults at the end.</p>
+<p>The keys in the returned dict are all normalized to lowercase (look for
+<code class="docutils literal notranslate"><span class="pre">&quot;port&quot;</span></code>, not <code class="docutils literal notranslate"><span class="pre">&quot;Port&quot;</span></code>. The values are processed according to the
+rules for substitution variable expansion in <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>.</p>
+<p>Finally, please see the docs for <a class="reference internal" href="#paramiko.config.SSHConfigDict" title="paramiko.config.SSHConfigDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a> for deeper info on
+features such as optional type conversion methods, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conf</span> <span class="o">=</span> <span class="n">my_config</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;myhost&#39;</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;passwordauthentication&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="o">.</span><span class="n">as_bool</span><span class="p">(</span><span class="s1">&#39;passwordauthentication&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there is no explicitly configured <code class="docutils literal notranslate"><span class="pre">HostName</span></code> value, it will be
+set to the being-looked-up hostname, which is as close as we can
+get to OpenSSH’s behavior around that particular option.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hostname</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the hostname to lookup</p>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.5: </span>Returns <a class="reference internal" href="#paramiko.config.SSHConfigDict" title="paramiko.config.SSHConfigDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a> objects instead of dict literals.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.7: </span>Added canonicalization support.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 2.7: </span>Added <code class="docutils literal notranslate"><span class="pre">Match</span></code> support.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.3: </span>Added <code class="docutils literal notranslate"><span class="pre">Match</span> <span class="pre">final</span></code> support.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.canonicalize">
+<span class="sig-name descname"><span class="pre">canonicalize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domains</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.canonicalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return canonicalized version of <code class="docutils literal notranslate"><span class="pre">hostname</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hostname</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Target hostname.</p></li>
+<li><p><strong>options</strong> – An <a class="reference internal" href="#paramiko.config.SSHConfigDict" title="paramiko.config.SSHConfigDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a> from a previous lookup pass.</p></li>
+<li><p><strong>domains</strong> – List of domains (e.g. <code class="docutils literal notranslate"><span class="pre">[&quot;paramiko.org&quot;]</span></code>).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A canonicalized hostname if one was found, else <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.get_hostnames">
+<span class="sig-name descname"><span class="pre">get_hostnames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfig.get_hostnames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the set of literal hostnames defined in the SSH config (both
+explicit hostnames and wildcard entries).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfig.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.config.SSHConfig.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.config.LazyFqdn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.config.</span></span><span class="sig-name descname"><span class="pre">LazyFqdn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.LazyFqdn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the host’s fqdn on request as string.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.LazyFqdn.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.LazyFqdn.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.LazyFqdn.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.LazyFqdn.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.config.LazyFqdn.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.config.LazyFqdn.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfigDict">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.config.</span></span><span class="sig-name descname"><span class="pre">SSHConfigDict</span></span><a class="headerlink" href="#paramiko.config.SSHConfigDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary wrapper/subclass for per-host configuration structures.</p>
+<p>This class introduces some usage niceties for consumers of <a class="reference internal" href="#paramiko.config.SSHConfig" title="paramiko.config.SSHConfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSHConfig</span></code></a>,
+specifically around the issue of variable type conversions: normal value
+access yields strings, but there are now methods such as <a class="reference internal" href="#paramiko.config.SSHConfigDict.as_bool" title="paramiko.config.SSHConfigDict.as_bool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_bool</span></code></a> and
+<a class="reference internal" href="#paramiko.config.SSHConfigDict.as_int" title="paramiko.config.SSHConfigDict.as_int"><code class="xref py py-obj docutils literal notranslate"><span class="pre">as_int</span></code></a> that yield casted values instead.</p>
+<p>For example, given the following <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code> file snippet:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Host</span> <span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+    <span class="n">PasswordAuthentication</span> <span class="n">no</span>
+    <span class="n">Compression</span> <span class="n">yes</span>
+    <span class="n">ServerAliveInterval</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<p>the following code highlights how you can access the raw strings as well as
+usefully Python type-casted versions (recalling that keys are all
+normalized to lowercase first):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="n">SSHConfig</span><span class="p">()</span>
+<span class="n">my_config</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;~/.ssh/config&#39;</span><span class="p">))</span>
+<span class="n">conf</span> <span class="o">=</span> <span class="n">my_config</span><span class="o">.</span><span class="n">lookup</span><span class="p">(</span><span class="s1">&#39;foo.example.com&#39;</span><span class="p">)</span>
+
+<span class="k">assert</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;passwordauthentication&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;no&#39;</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="o">.</span><span class="n">as_bool</span><span class="p">(</span><span class="s1">&#39;passwordauthentication&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;compression&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;yes&#39;</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="o">.</span><span class="n">as_bool</span><span class="p">(</span><span class="s1">&#39;compression&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="p">[</span><span class="s1">&#39;serveraliveinterval&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;60&#39;</span>
+<span class="k">assert</span> <span class="n">conf</span><span class="o">.</span><span class="n">as_int</span><span class="p">(</span><span class="s1">&#39;serveraliveinterval&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.5.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfigDict.as_bool">
+<span class="sig-name descname"><span class="pre">as_bool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfigDict.as_bool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Express given key’s value as a boolean type.</p>
+<p>Typically, this is used for <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>’s pseudo-boolean values
+which are either <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;no&quot;</span></code>. In such cases, <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code> yields
+<code class="docutils literal notranslate"><span class="pre">True</span></code> and any other value becomes <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If (for whatever reason) the stored value is already boolean in
+nature, it’s simply returned.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.5.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfigDict.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.config.SSHConfigDict.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.config.SSHConfigDict.as_int">
+<span class="sig-name descname"><span class="pre">as_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.config.SSHConfigDict.as_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Express given key’s value as an integer, if possible.</p>
+<p>This method will raise <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> or similar if the value is not
+int-appropriate, same as the builtin <a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code></a> type.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.5.</span></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#keywords-currently-supported">Keywords currently supported</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#expansion-tokens">Expansion tokens</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#config-module-api-documentation"><code class="docutils literal notranslate"><span class="pre">config</span></code> module API documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.config.SSHConfig"><code class="docutils literal notranslate"><span class="pre">SSHConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.__init__"><code class="docutils literal notranslate"><span class="pre">SSHConfig.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.from_text"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_text()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.from_path"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_path()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.from_file"><code class="docutils literal notranslate"><span class="pre">SSHConfig.from_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.parse"><code class="docutils literal notranslate"><span class="pre">SSHConfig.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.lookup"><code class="docutils literal notranslate"><span class="pre">SSHConfig.lookup()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.canonicalize"><code class="docutils literal notranslate"><span class="pre">SSHConfig.canonicalize()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.get_hostnames"><code class="docutils literal notranslate"><span class="pre">SSHConfig.get_hostnames()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfig.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHConfig.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.config.LazyFqdn"><code class="docutils literal notranslate"><span class="pre">LazyFqdn</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.LazyFqdn.__init__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__init__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.LazyFqdn.__str__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__str__()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.LazyFqdn.__weakref__"><code class="docutils literal notranslate"><span class="pre">LazyFqdn.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.config.SSHConfigDict"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfigDict.as_bool"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.as_bool()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfigDict.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.__weakref__</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#paramiko.config.SSHConfigDict.as_int"><code class="docutils literal notranslate"><span class="pre">SSHConfigDict.as_int()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_exception.html">Exceptions</a></li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/config.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>

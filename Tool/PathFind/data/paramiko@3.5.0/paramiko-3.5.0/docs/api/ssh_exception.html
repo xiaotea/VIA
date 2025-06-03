@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Exceptions &#8212; Paramiko  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Cross-platform pipe implementations" href="pipe.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-paramiko.ssh_exception">
+<span id="exceptions"></span><h1>Exceptions<a class="headerlink" href="#module-paramiko.ssh_exception" title="Permalink to this heading">¶</a></h1>
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.AuthenticationException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">AuthenticationException</span></span><a class="headerlink" href="#paramiko.ssh_exception.AuthenticationException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when authentication failed for some reason.  It may be
+possible to retry with different credentials.  (Other classes specify more
+specific reasons.)</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.6.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadAuthenticationType">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">BadAuthenticationType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">explanation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadAuthenticationType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when an authentication type (like password) is used, but
+the server isn’t allowing that type.  (It may only allow public-key, for
+example.)</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.1.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadAuthenticationType.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">explanation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadAuthenticationType.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadAuthenticationType.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadAuthenticationType.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadHostKeyException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">BadHostKeyException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">got_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadHostKeyException" title="Permalink to this definition">¶</a></dt>
+<dd><p>The host key given by the SSH server did not match what we were expecting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hostname</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – the hostname of the SSH server</p></li>
+<li><p><strong>got_key</strong> (<a class="reference internal" href="keys.html#paramiko.pkey.PKey" title="paramiko.pkey.PKey"><em>PKey</em></a>) – the host key presented by the server</p></li>
+<li><p><strong>expected_key</strong> (<a class="reference internal" href="keys.html#paramiko.pkey.PKey" title="paramiko.pkey.PKey"><em>PKey</em></a>) – the host key expected</p></li>
+</ul>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.6.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadHostKeyException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hostname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">got_key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadHostKeyException.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.BadHostKeyException.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.BadHostKeyException.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ChannelException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">ChannelException</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ChannelException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when an attempt to open a new <a class="reference internal" href="channel.html#paramiko.channel.Channel" title="paramiko.channel.Channel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Channel</span></code></a> fails.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – the error code returned by the server</p>
+</dd>
+</dl>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.6.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ChannelException.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ChannelException.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ChannelException.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ChannelException.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ConfigParseError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">ConfigParseError</span></span><a class="headerlink" href="#paramiko.ssh_exception.ConfigParseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A fatal error was encountered trying to parse SSH config data.</p>
+<p>Typically this means a config file violated the <code class="docutils literal notranslate"><span class="pre">ssh_config</span></code>
+specification in a manner that requires exiting immediately, such as not
+matching <code class="docutils literal notranslate"><span class="pre">key</span> <span class="pre">=</span> <span class="pre">value</span></code> syntax or misusing certain <code class="docutils literal notranslate"><span class="pre">Match</span></code> keywords.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.CouldNotCanonicalize">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">CouldNotCanonicalize</span></span><a class="headerlink" href="#paramiko.ssh_exception.CouldNotCanonicalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raised when hostname canonicalization fails &amp; fallback is disabled.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.7.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.IncompatiblePeer">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">IncompatiblePeer</span></span><a class="headerlink" href="#paramiko.ssh_exception.IncompatiblePeer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A disagreement arose regarding an algorithm required for key exchange.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 2.9.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.MessageOrderError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">MessageOrderError</span></span><a class="headerlink" href="#paramiko.ssh_exception.MessageOrderError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Out-of-order protocol messages were received, violating “strict kex” mode.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 3.4.</span></p>
+</div>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.NoValidConnectionsError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">NoValidConnectionsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.NoValidConnectionsError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiple connection attempts were made and no families succeeded.</p>
+<p>This exception class wraps multiple “real” underlying connection errors,
+all of which represent failed connection attempts. Because these errors are
+not guaranteed to all be of the same error type (i.e. different errno,
+<a class="reference external" href="https://docs.python.org/3.6/library/socket.html#socket.error" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">socket.error</span></code></a> subclass, message, etc) we expose a single unified error
+message and a <code class="docutils literal notranslate"><span class="pre">None</span></code> errno so that instances of this class match most
+normal handling of <a class="reference external" href="https://docs.python.org/3.6/library/socket.html#socket.error" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">socket.error</span></code></a> objects.</p>
+<p>To see the wrapped exception objects, access the <code class="docutils literal notranslate"><span class="pre">errors</span></code> attribute.
+<code class="docutils literal notranslate"><span class="pre">errors</span></code> is a dict whose keys are address tuples (e.g. <code class="docutils literal notranslate"><span class="pre">('127.0.0.1',</span>
+<span class="pre">22)</span></code>) and whose values are the exception encountered trying to connect to
+that address.</p>
+<p>It is implied/assumed that all the errors given to a single instance of
+this class are from connecting to the same hostname + port (and thus that
+the differences are in the resolution of the hostname - e.g. IPv4 vs v6).</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.16.</span></p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.NoValidConnectionsError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">errors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.NoValidConnectionsError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>errors</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a>) – The errors dict to store, as described by class docstring.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.NoValidConnectionsError.__reduce__">
+<span class="sig-name descname"><span class="pre">__reduce__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.NoValidConnectionsError.__reduce__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper for pickle.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.NoValidConnectionsError.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.ssh_exception.NoValidConnectionsError.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.PartialAuthentication">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">PartialAuthentication</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.PartialAuthentication" title="Permalink to this definition">¶</a></dt>
+<dd><p>An internal exception thrown in the case of partial authentication.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.PartialAuthentication.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">types</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.PartialAuthentication.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.PartialAuthentication.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.PartialAuthentication.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.PasswordRequiredException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">PasswordRequiredException</span></span><a class="headerlink" href="#paramiko.ssh_exception.PasswordRequiredException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised when a password is needed to unlock a private key file.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ProxyCommandFailure">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">ProxyCommandFailure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ProxyCommandFailure" title="Permalink to this definition">¶</a></dt>
+<dd><p>The “ProxyCommand” found in the .ssh/config file returned an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>command</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The command line that is generating this exception.</p></li>
+<li><p><strong>error</strong> (<a class="reference external" href="https://docs.python.org/3.6/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The error captured from the proxy command output.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ProxyCommandFailure.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ProxyCommandFailure.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.ProxyCommandFailure.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#paramiko.ssh_exception.ProxyCommandFailure.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.SSHException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">SSHException</span></span><a class="headerlink" href="#paramiko.ssh_exception.SSHException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised by failures in SSH2 protocol negotiation or logic errors.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.SSHException.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#paramiko.ssh_exception.SSHException.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="paramiko.ssh_exception.UnableToAuthenticate">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">paramiko.ssh_exception.</span></span><span class="sig-name descname"><span class="pre">UnableToAuthenticate</span></span><a class="headerlink" href="#paramiko.ssh_exception.UnableToAuthenticate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Paramiko</a></h1>
+
+
+
+<p class="blurb">A Python implementation of SSHv2.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=paramiko&repo=paramiko&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="channel.html">Channel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="message.html">Message</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packet.html">Packetizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">Transport</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auth.html">Authentication modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agent.html">SSH agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hostkeys.html">Host keys / <code class="docutils literal notranslate"><span class="pre">known_hosts</span></code> files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="keys.html">Key handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssh_gss.html">GSS-API authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kex_gss.html">GSS-API key exchange</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="proxy.html"><code class="docutils literal notranslate"><span class="pre">ProxyCommand</span></code> support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">Server implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sftp.html">SFTP</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="buffered_pipe.html">Buffered pipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file.html">Buffered files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipe.html">Cross-platform pipe implementations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.AuthenticationException"><code class="docutils literal notranslate"><span class="pre">AuthenticationException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.BadAuthenticationType"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.BadAuthenticationType.__init__"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.BadAuthenticationType.__str__"><code class="docutils literal notranslate"><span class="pre">BadAuthenticationType.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.BadHostKeyException"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.BadHostKeyException.__init__"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.BadHostKeyException.__str__"><code class="docutils literal notranslate"><span class="pre">BadHostKeyException.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.ChannelException"><code class="docutils literal notranslate"><span class="pre">ChannelException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.ChannelException.__init__"><code class="docutils literal notranslate"><span class="pre">ChannelException.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.ChannelException.__str__"><code class="docutils literal notranslate"><span class="pre">ChannelException.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.ConfigParseError"><code class="docutils literal notranslate"><span class="pre">ConfigParseError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.CouldNotCanonicalize"><code class="docutils literal notranslate"><span class="pre">CouldNotCanonicalize</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.IncompatiblePeer"><code class="docutils literal notranslate"><span class="pre">IncompatiblePeer</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.MessageOrderError"><code class="docutils literal notranslate"><span class="pre">MessageOrderError</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.NoValidConnectionsError"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.NoValidConnectionsError.__init__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.NoValidConnectionsError.__reduce__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__reduce__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.NoValidConnectionsError.__weakref__"><code class="docutils literal notranslate"><span class="pre">NoValidConnectionsError.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.PartialAuthentication"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.PartialAuthentication.__init__"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.PartialAuthentication.__str__"><code class="docutils literal notranslate"><span class="pre">PartialAuthentication.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.PasswordRequiredException"><code class="docutils literal notranslate"><span class="pre">PasswordRequiredException</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.ProxyCommandFailure"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.ProxyCommandFailure.__init__"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.ProxyCommandFailure.__str__"><code class="docutils literal notranslate"><span class="pre">ProxyCommandFailure.__str__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.SSHException"><code class="docutils literal notranslate"><span class="pre">SSHException</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#paramiko.ssh_exception.SSHException.__weakref__"><code class="docutils literal notranslate"><span class="pre">SSHException.__weakref__</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#paramiko.ssh_exception.UnableToAuthenticate"><code class="docutils literal notranslate"><span class="pre">UnableToAuthenticate</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+
+<hr />
+<ul>
+    
+    <li class="toctree-l1"><a href="http://www.paramiko.org">Main website</a></li>
+    
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+<h3 class="donation">Donate/support</h3>
+
+
+
+
+
+
+
+<p>
+Professionally-supported Paramiko is available with the
+<a href="https://tidelift.com/subscription/pkg/pypi-paramiko?utm_source=pypi-paramiko&utm_medium=referral&utm_campaign=docs">Tidelift Subscription</a>.
+</p>
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024 Jeff Forcier.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/ssh_exception.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-18486793-2']);
+      _gaq.push(['_setDomainName', 'none']);
+      _gaq.push(['_setAllowLinker', true]);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+    
+  </body>
+</html>
