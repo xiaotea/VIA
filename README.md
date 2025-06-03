@@ -1,4 +1,4 @@
-===========================================
+
 VIA: Real-World Automated Vulnerability Impact Analysis for the PyPI Ecosystem
 ===========================================
 
