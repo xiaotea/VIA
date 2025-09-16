@@ -1,45 +1,93 @@
+# Short Paths, Real Risks: A Large-Scale Empirical Study of Dependency Relationships in PyPI Ecosystem
 
-VIA: Real-World Automated Vulnerability Impact Analysis for the PyPI Ecosystem
-===========================================
+## Open-Source Dataset, Analysis Framework, and Tools Overview
 
-Overview
---------
-VIA (Vulnerability Impact Analysis) is a framework designed to reduce false positive vulnerability alerts in the Python ecosystem. It combines Large Language Models (LLMs) and static analysis techniques to evaluate whether reported vulnerabilities truly affect downstream components.
+To foster reproducibility and community-driven advancements, we release a comprehensive open-source package comprising datasets, analysis methods, and empirical results from our large-scale study of the PyPI ecosystem.
 
-The framework addresses three core issues:
-1. Incorrect version-to-vulnerability mappings
-2. Unused or undeclared dependencies
-3. Vulnerable code that is never invoked
+### Dataset
+We construct a large-scale dataset for Python vulnerability impact analysis, containing **315,191 triples** of the form  
+`&lt;CVE, vulnerable component, downstream component&gt;`.  
 
-Our dataset consists of 577,329 vulnerability-component-component triples. Evaluation results show that only 3.7% of reported vulnerabilities pose actual threats.
+The dataset includes:
+- **3,839** verified patches  
+- **6,676** vulnerability locations  
+- **851** unique vulnerabilities  
+- **5,794** vulnerable component versions  
+- **63,791** downstream component versions  
 
-Folder Structure
-----------------
-1. AnalyzeResult
-   - Contains the output of VIA's core modules:
-     * Vulnerability Existence Verification (LLM-based)
-     * Realistic Dependency Extraction
-     * Call Path Reachability Analysis
+Each record is further annotated with:
+- Declarative and deployed dependency graphs  
+- Propagation paths  
+- Call-graph validation results  
 
-2. DataSet
-   - Raw data used by VIA, including:
-     * Vulnerability reports
-     * PyPI component metadata
-     * Ground truth version mappings
-     * Evaluation-ready triple data
+### Analysis Process
+Our framework follows a **two-stage methodology**:
 
-3. RQ_data
-   - Experimental data for the research questions (RQ1–RQ5):
-     * Preprocessed statistics
-     * Data visualizations and figures from the paper
+1. **Component Usage Verification** — parse source code imports to construct deployed dependency graphs, exposing both redundant and latent dependencies.  
+2. **Code Invocation Verification** — integrate call-graph tracing (e.g., PyCG) to confirm whether vulnerable code blocks are actually invoked along dependency paths.  
 
-4. Tool
-   - Full source code of the VIA framework, including:
-     * LLM-based vulnerability checker
-     * Deployed Dependency Extraction Method
-     * Call Path Analysis for Vulnerable Code Method
+This combined approach enables precise filtering of false positives while prioritizing vulnerabilities with real security impact.
 
-Usage
------
-Refer to the `Tool/README.md` file for installation, dependencies, and execution instructions.
+### Tools
+We provide modular static analysis tools for:
+- Extracting real dependency graphs from source code  
+- Comparing declarative vs. deployed dependencies to detect redundant and latent dependencies  
+- Performing scalable call-path analysis with a divide-and-conquer algorithm to assess code-level reachability  
 
+These tools are open-sourced and designed for integration into CI/CD pipelines and downstream vulnerability triage workflows.
+
+### Empirical Results
+Our findings demonstrate that:
+- **41%** of declared dependencies are redundant, while **20%** of real dependencies are latent  
+- Vulnerability reachability rapidly decays with path length: **99%** of reachable cases occur within three layers, whereas paths longer than six layers are effectively non-propagating  
+- Only **5.5%** of reported vulnerabilities pose real risks after validating both dependency usage and code invocation  
+
+---
+
+Together, the open dataset, analysis framework, and released results provide a rigorous foundation for future research, reproducibility studies, and the development of more accurate vulnerability detection tools.
+
+
+---
+
+## Folder Structure
+
+\`\`\`
+.
+├─ AnalyzeResult
+│  └─ Realistic Dependency Extraction \& Vulnerable Code Call Path Analysis（Results archived in AnalyzeResult/Realistic Dependency Extraction \& Vulnerable Code Call Path Analysis/AnalyzeRes.7z.）
+│
+├─ DataSet
+│   Triad.csv — \<vulnerability–vulnerable component–downstream component> triples
+│   VUL_FUNs.csv — vulnerable functions metadata
+│   VUL_patch.csv — patches
+│
+├─ RQ_data
+│  ├─ dataset_code_stats
+│  ├─ RQ1
+│  │   └─ downloads_data
+│  ├─ RQ2
+│  └─ summary
+│   Experimental data for research questions (RQ1–RQ2), including:
+│   - Preprocessed statistics
+│   - Data visualizations and figures from the paper
+│
+└─ Tool
+   └─ PathFind
+      ├─ core
+      ├─ pycg_ex
+      ├─ utils
+      ├─ tool
+      └─ data
+\`\`\`
+
+---
+
+## Core Modules
+
+- **Deployed Dependency Extraction Method**  
+- **Call Path Analysis for Vulnerable Code**  
+
+---
+
+## Usage
+Please refer to [\`Tool/README.md\`](Tool/README.md) for installation, dependencies, and execution instructions.
