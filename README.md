@@ -51,15 +51,16 @@ Together, the open dataset, analysis framework, and released results provide a r
 
 ## Folder Structure
 
-\`\`\`
+```text
 .
 ├─ AnalyzeResult
-│  └─ Realistic Dependency Extraction \& Vulnerable Code Call Path Analysis（Results archived in AnalyzeResult/Realistic Dependency Extraction \& Vulnerable Code Call Path Analysis/AnalyzeRes.7z.）
+│  └─ Realistic Dependency Extraction & Vulnerable Code Call Path Analysis
+│     └─ AnalyzeRes.7z   (archived results)
 │
 ├─ DataSet
-│   Triad.csv — \<vulnerability–vulnerable component–downstream component> triples
-│   VUL_FUNs.csv — vulnerable functions metadata
-│   VUL_patch.csv — patches
+│  ├─ Triad.csv       -- &lt;vulnerability, vulnerable component, downstream component&gt; triples
+│  ├─ VUL_FUNs.csv    -- vulnerable functions metadata
+│  └─ VUL_patch.csv   -- patches
 │
 ├─ RQ_data
 │  ├─ dataset_code_stats
@@ -67,9 +68,8 @@ Together, the open dataset, analysis framework, and released results provide a r
 │  │   └─ downloads_data
 │  ├─ RQ2
 │  └─ summary
-│   Experimental data for research questions (RQ1–RQ2), including:
-│   - Preprocessed statistics
-│   - Data visualizations and figures from the paper
+│      ├─ Preprocessed statistics
+│      └─ Data visualizations and figures from the paper
 │
 └─ Tool
    └─ PathFind
@@ -78,7 +78,7 @@ Together, the open dataset, analysis framework, and released results provide a r
       ├─ utils
       ├─ tool
       └─ data
-\`\`\`
+```
 
 ---
 
